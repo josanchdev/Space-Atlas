@@ -10,10 +10,7 @@ export default function Header() {
           <div className="aa-logo">
             <img 
               src={logoSpaceAtlas} 
-              alt="Space Atlas Logo" 
-              width="100" 
-              height="100"
-              style={{ display: 'block' }}
+              alt="Space Atlas Logo"
             />
           </div>
           <div className="aa-title">
