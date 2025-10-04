@@ -9,6 +9,8 @@ export default function SpaceMissionsPage() {
   const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [notified, setNotified] = useState(false)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
   const navigate = useNavigate()
 
   // Three missions for the carousel
@@ -64,6 +66,33 @@ export default function SpaceMissionsPage() {
     setCurrentSlide(index)
   }
 
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe && currentSlide < missions.length - 1) {
+      nextSlide()
+    }
+    if (isRightSwipe && currentSlide > 0) {
+      prevSlide()
+    }
+
+    setTouchStart(0)
+    setTouchEnd(0)
+  }
+
   if (loading) {
     return (
       <div className="missions-container">
@@ -83,7 +112,12 @@ export default function SpaceMissionsPage() {
         </button>
 
         {/* Carousel Track */}
-        <div className="carousel-track-container">
+        <div 
+          className="carousel-track-container"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div 
             className="carousel-track"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}

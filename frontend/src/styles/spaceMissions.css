@@ -49,6 +49,8 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Carousel Track */
@@ -414,17 +416,9 @@
     font-size: 1rem;
   }
 
+  /* Hide arrows on tablet portrait - use touch swipe */
   .carousel-arrow {
-    width: 50px;
-    height: 50px;
-  }
-
-  .carousel-arrow-left {
-    left: 1rem;
-  }
-
-  .carousel-arrow-right {
-    right: 1rem;
+    display: none;
   }
 
   .carousel-dots {
@@ -462,22 +456,9 @@
     align-self: stretch;
   }
 
+  /* Hide arrows on mobile - use touch swipe instead */
   .carousel-arrow {
-    width: 40px;
-    height: 40px;
-  }
-
-  .carousel-arrow svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .carousel-arrow-left {
-    left: 0.5rem;
-  }
-
-  .carousel-arrow-right {
-    right: 0.5rem;
+    display: none;
   }
 
   .carousel-dots {
