@@ -36,7 +36,7 @@ const PLANETS = [
 
 import { getModelUrlFor } from '../utils/modelIndex'
 
-function Planet({ p, index, onClick, showLabels = true }) {
+function Planet({ p, index, onClick, showLabels = true, isLoading = false }) {
   const ref = useRef()
 
   // update orbit position every frame so React doesn't need to re-render the tree
@@ -53,7 +53,7 @@ function Planet({ p, index, onClick, showLabels = true }) {
     <group ref={ref}>
       {/* use the same ClickableModel behavior used by Sun/Moon */}
       <ClickableModel name={p.name} baseScale={p.radius} onClick={() => onClick(p.name)} spin={true} />
-      {showLabels && (
+      {showLabels && !isLoading && (
         <Html distanceFactor={8} style={{ pointerEvents: 'none', transform: 'translateY(-1rem)' }}>
           <div style={{ color: '#fff', fontSize: 12, background: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: 4 }}>{p.name}</div>
         </Html>
@@ -62,7 +62,7 @@ function Planet({ p, index, onClick, showLabels = true }) {
   )
 }
 
-function Moon({ timeRef, onPlanetClick }) {
+function Moon({ timeRef, onPlanetClick, isLoading = false }) {
   const ref = useRef()
 
   useFrame((state) => {
@@ -105,33 +105,33 @@ function Moon({ timeRef, onPlanetClick }) {
 
   return (
     <group ref={ref}>
-      <ClickableModel name={'Moon_Earth'} baseScale={0.18} label={'Moon'} onClick={() => onPlanetClick('moon')} spin={false} />
+      <ClickableModel name={'Moon_Earth'} baseScale={0.18} label={'Moon'} onClick={() => onPlanetClick('moon')} spin={false} isLoading={isLoading} />
     </group>
   )
 }
 
-function SystemInner({ onPlanetClick, timeRef, showLabels }) {
+function SystemInner({ onPlanetClick, timeRef, showLabels, isLoading }) {
   // Sun
   return (
     <>
       {/* Sun model (replace fallback sphere) */}
       <group>
         {/* ClickableModel will handle hover + click animation and invoke onPlanetClick('sun') */}
-        <ClickableModel name={'Sun'} baseScale={2.0} label={'Sun'} onClick={() => onPlanetClick('sun')} spin={true} />
+        <ClickableModel name={'Sun'} baseScale={2.0} label={'Sun'} onClick={() => onPlanetClick('sun')} spin={true} isLoading={isLoading} />
       </group>
 
       {PLANETS.map((p, i) => (
-        <Planet key={p.name} p={p} index={i} onClick={(name) => onPlanetClick(name)} showLabels={showLabels} />
+        <Planet key={p.name} p={p} index={i} onClick={(name) => onPlanetClick(name)} showLabels={showLabels} isLoading={isLoading} />
       ))}
 
       {/* Moon orbiting the Earth (uses Moon_Earth.glb in assets) */}
-      <Moon timeRef={timeRef} onPlanetClick={onPlanetClick} />
+      <Moon timeRef={timeRef} onPlanetClick={onPlanetClick} isLoading={isLoading} />
     </>
   )
 }
 
 // Reusable clickable 3D model that handles hover (scale) and a click "pulse" animation
-function ClickableModel({ name, baseScale = 1, label, onClick, spin = false }) {
+function ClickableModel({ name, baseScale = 1, label, onClick, spin = false, isLoading = false }) {
   const ref = useRef()
   const animRef = useRef(0)
   const timeoutRef = useRef()
@@ -216,7 +216,7 @@ function ClickableModel({ name, baseScale = 1, label, onClick, spin = false }) {
       }}
     >
       <ModelLoader name={name} scale={1} />
-      {label && (
+      {label && !isLoading && (
         <Html distanceFactor={8} style={{ pointerEvents: 'none', transform: 'translateY(-0.8rem)' }}>
           <div style={{ color: '#fff', fontSize: label === 'Sun' ? 13 : 11, background: 'rgba(0,0,0,0.4)', padding: '4px 8px', borderRadius: 6 }}>{label}</div>
         </Html>
@@ -235,18 +235,32 @@ export default function SolarSystem() {
   const [showOrbits, setShowOrbits] = useState(true)
   const [showLabels, setShowLabels] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const spinRef = useRef(null)
 
   // Preload a small set of models on mount to make first interactions snappier
   useEffect(() => {
     const toPreload = ['Sun', 'Moon_Earth', 'earth', 'jupiter']
+    let loaded = 0
+    const total = toPreload.length
+    
     toPreload.forEach((name) => {
       const viteUrl = getModelUrlFor(name)
       const path = viteUrl || `/src/assets/3D-models/${name}.glb`
-      // fire-and-forget
-      loadGLTF(path).catch(() => {
-        /* ignore preload errors */
-      })
+      loadGLTF(path)
+        .then(() => {
+          loaded++
+          if (loaded === total) {
+            // All models preloaded, hide loader instantly
+            setIsLoading(false)
+          }
+        })
+        .catch(() => {
+          loaded++
+          if (loaded === total) {
+            setIsLoading(false)
+          }
+        })
     })
   }, [])
 
@@ -254,7 +268,7 @@ export default function SolarSystem() {
     useFrame((state, delta) => {
       timeRef.current += delta * TIME_SCALE
     })
-    return <SystemInner onPlanetClick={(name) => navigate(`/${name}`)} timeRef={timeRef} showLabels={showLabels} />
+    return <SystemInner onPlanetClick={(name) => navigate(`/${name}`)} timeRef={timeRef} showLabels={showLabels} isLoading={isLoading} />
   }
 
   // simple orbit rings using lines
@@ -273,14 +287,63 @@ export default function SolarSystem() {
 
   return (
     <div ref={containerRef} style={{ position: 'fixed', inset: 0, width: '100%', height: '100vh', zIndex: 0, background: '#000' }}>
-  <Canvas style={{ width: '100%', height: '100%', background: '#000' }} camera={{ position: [0, 5, 14], fov: 50 }}>
-  <ambientLight intensity={0.6} />
-  <directionalLight position={[10, 10, 5]} intensity={0.8} />
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#000',
+          opacity: 1
+        }}>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '20px',
+            padding: '40px 50px',
+            background: 'rgba(6, 8, 12, 0.95)',
+            borderRadius: '20px',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(144, 202, 249, 0.3)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)'
+          }}>
+            <div className="solar-loader"></div>
+            <div style={{
+              color: '#90CAF9',
+              fontSize: '20px',
+              fontWeight: '600',
+              letterSpacing: '1.5px',
+              textAlign: 'center'
+            }}>
+              Loading Solar System...
+            </div>
+            <div style={{
+              color: '#B0BEC5',
+              fontSize: '14px',
+              textAlign: 'center'
+            }}>
+              Preparing 3D models
+            </div>
+          </div>
+        </div>
+      )}
 
-  {/* starfield background */}
-  <Stars radius={100} depth={50} count={6000} factor={4} fade speed={1} />
+      <Canvas style={{ width: '100%', height: '100%', background: '#000' }} camera={{ position: [0, 5, 14], fov: 50 }}>
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[10, 10, 5]} intensity={0.8} />
 
-  <Inner />
+        {/* starfield background */}
+        <Stars radius={100} depth={50} count={6000} factor={4} fade speed={1} />
+
+        {/* Render the solar system from the start so it loads in the background */}
+        <Inner />
 
         {showOrbits &&
           rings.map((r, i) => (

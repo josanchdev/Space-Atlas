@@ -27,3 +27,57 @@ div[style] > button:focus-visible{
 div[style] > button:focus-visible{
 	box-shadow: 0 0 0 3px rgba(154,209,255,0.12);
 }
+
+/* ============================================
+   SOLAR SYSTEM LOADER ANIMATION
+   ============================================ */
+
+.solar-loader {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.solar-loader::before {
+  content: '';
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid rgba(144, 202, 249, 0.2);
+  border-top-color: #90CAF9;
+  animation: solar-spin 1s linear infinite;
+}
+
+.solar-loader::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 213, 79, 0.2);
+  border-top-color: #FFD54F;
+  animation: solar-spin 0.7s linear infinite reverse;
+}
+
+@keyframes solar-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pulse animation for loading text */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
