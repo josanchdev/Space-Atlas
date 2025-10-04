@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Html, Stars } from '@react-three/drei'
-import { Globe, Eye, RefreshCcw, Maximize2, Tag, Minimize2, Orbit } from 'lucide-react'
+import { Globe, Eye, RefreshCcw, Maximize2, Tag, Minimize2, Orbit, ArrowLeft } from 'lucide-react'
 import '../styles/solarControls.css'
 
 // using Orbit icon from lucide-react
@@ -352,84 +352,234 @@ export default function SolarSystem() {
             </line>
           ))}
 
-        <OrbitControls ref={controlsRef} target={[0, 0, 0]} enablePan={true} enableZoom={true} />
+        <OrbitControls 
+          ref={controlsRef} 
+          target={[0, 0, 0]} 
+          enablePan={true} 
+          enableZoom={true}
+          minDistance={3}
+          maxDistance={50}
+        />
       </Canvas>
 
-      {/* UI overlay: new icon control bar positioned below header */}
-  <div style={{ position: 'absolute', right: 20, top: 92, color: '#fff', zIndex: 1001 }}>
-  <div style={{ display: 'flex', gap: 12, alignItems: 'center', background: 'rgba(6,8,12,0.6)', padding: 10, borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)' }}>
+      {/* Back button - top left */}
+      <div style={{ position: 'absolute', left: 20, top: 20, zIndex: 1001 }}>
+        <button
+          onClick={() => navigate(-1)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            padding: '12px 20px',
+            background: 'rgba(6, 8, 12, 0.7)',
+            border: '1px solid rgba(144, 202, 249, 0.3)',
+            borderRadius: 12,
+            color: '#90CAF9',
+            fontSize: 15,
+            fontWeight: 500,
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            backdropFilter: 'blur(8px)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(144, 202, 249, 0.15)'
+            e.currentTarget.style.borderColor = '#90CAF9'
+            e.currentTarget.style.transform = 'translateX(-3px)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(6, 8, 12, 0.7)'
+            e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.3)'
+            e.currentTarget.style.transform = 'translateX(0)'
+          }}
+        >
+          <ArrowLeft size={20} />
+          <span>Back</span>
+        </button>
+      </div>
+
+      {/* Control buttons - top right */}
+      <div style={{ position: 'absolute', right: 20, top: 20, zIndex: 1001 }}>
+        <div style={{ 
+          display: 'flex', 
+          gap: 10, 
+          alignItems: 'center', 
+          background: 'rgba(6, 8, 12, 0.7)', 
+          padding: 12, 
+          borderRadius: 14, 
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)', 
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(144, 202, 249, 0.2)'
+        }}>
 
           {/* Orbits toggle */}
-          <button
-            title={showOrbits ? 'Ocultar órbitas' : 'Mostrar órbitas'}
-            aria-pressed={!showOrbits}
-            onClick={() => setShowOrbits((v) => !v)}
-            style={{ width: 60, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 12, border: 'none', cursor: 'pointer', background: showOrbits ? 'linear-gradient(90deg,#6EC6FF,#8E7BFF)' : 'transparent' }}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <button
+              title={showOrbits ? 'Hide Orbits' : 'Show Orbits'}
+              aria-pressed={showOrbits}
+              onClick={() => setShowOrbits((v) => !v)}
+              style={{ 
+                width: 54, 
+                height: 54, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                borderRadius: 10, 
+                border: showOrbits ? '2px solid rgba(144, 202, 249, 0.6)' : '1px solid rgba(144, 202, 249, 0.2)', 
+                cursor: 'pointer', 
+                background: showOrbits ? 'linear-gradient(135deg, rgba(110, 198, 255, 0.25), rgba(142, 123, 255, 0.25))' : 'rgba(6, 8, 12, 0.4)',
+                transition: 'all 0.2s ease',
+                boxShadow: showOrbits ? '0 2px 8px rgba(110, 198, 255, 0.3)' : 'none'
+              }}
+              onMouseEnter={(e) => {
+                if (!showOrbits) {
+                  e.currentTarget.style.background = 'rgba(144, 202, 249, 0.1)'
+                  e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.4)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!showOrbits) {
+                  e.currentTarget.style.background = 'rgba(6, 8, 12, 0.4)'
+                  e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.2)'
+                }
+              }}
             >
-            {/* custom Orbit icon provided by user */}
-            <Orbit width={28} height={28} style={{ color: showOrbits ? '#061018' : '#9ad1ff' }} />
-          </button>
+              <Orbit size={24} style={{ color: showOrbits ? '#90CAF9' : '#6B7280' }} />
+            </button>
+            <span style={{ fontSize: 11, color: showOrbits ? '#90CAF9' : '#6B7280', fontWeight: 500 }}>Orbits</span>
+          </div>
 
           {/* Labels toggle */}
-          <button
-            title={showLabels ? 'Ocultar etiquetas' : 'Mostrar etiquetas'}
-            aria-pressed={!showLabels}
-            onClick={() => setShowLabels((v) => !v)}
-            style={{ width: 60, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 12, border: 'none', cursor: 'pointer', background: showLabels ? 'linear-gradient(90deg,#6EC6FF,#8E7BFF)' : 'transparent' }}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <button
+              title={showLabels ? 'Hide Labels' : 'Show Labels'}
+              aria-pressed={showLabels}
+              onClick={() => setShowLabels((v) => !v)}
+              style={{ 
+                width: 54, 
+                height: 54, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                borderRadius: 10, 
+                border: showLabels ? '2px solid rgba(144, 202, 249, 0.6)' : '1px solid rgba(144, 202, 249, 0.2)', 
+                cursor: 'pointer', 
+                background: showLabels ? 'linear-gradient(135deg, rgba(110, 198, 255, 0.25), rgba(142, 123, 255, 0.25))' : 'rgba(6, 8, 12, 0.4)',
+                transition: 'all 0.2s ease',
+                boxShadow: showLabels ? '0 2px 8px rgba(110, 198, 255, 0.3)' : 'none'
+              }}
+              onMouseEnter={(e) => {
+                if (!showLabels) {
+                  e.currentTarget.style.background = 'rgba(144, 202, 249, 0.1)'
+                  e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.4)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!showLabels) {
+                  e.currentTarget.style.background = 'rgba(6, 8, 12, 0.4)'
+                  e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.2)'
+                }
+              }}
             >
-            <Tag size={28} color={showLabels ? '#061018' : '#9ad1ff'} />
-          </button>
+              <Tag size={24} color={showLabels ? '#90CAF9' : '#6B7280'} />
+            </button>
+            <span style={{ fontSize: 11, color: showLabels ? '#90CAF9' : '#6B7280', fontWeight: 500 }}>Labels</span>
+          </div>
 
           {/* Reset view */}
-          <button
-            title="Restablecer vista"
-            onClick={() => {
-              // restart CSS spin animation on the icon container
-              if (spinRef.current) {
-                try {
-                  spinRef.current.classList.remove('spin')
-                  // force reflow to restart animation
-                  // eslint-disable-next-line no-unused-expressions
-                  spinRef.current.offsetWidth
-                  spinRef.current.classList.add('spin')
-                } catch (e) {}
-              }
-              if (controlsRef.current) {
-                try {
-                  controlsRef.current.reset()
-                  controlsRef.current.update()
-                } catch (e) {
-                  /* ignore */
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <button
+              title="Reset View"
+              onClick={() => {
+                if (spinRef.current) {
+                  try {
+                    spinRef.current.classList.remove('spin')
+                    spinRef.current.offsetWidth
+                    spinRef.current.classList.add('spin')
+                  } catch (e) {}
                 }
-              }
-            }}
-            style={{ width: 60, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 12, border: 'none', cursor: 'pointer', background: 'transparent' }}
+                if (controlsRef.current) {
+                  try {
+                    controlsRef.current.reset()
+                    controlsRef.current.update()
+                  } catch (e) {}
+                }
+              }}
+              style={{ 
+                width: 54, 
+                height: 54, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                borderRadius: 10, 
+                border: '1px solid rgba(144, 202, 249, 0.2)', 
+                cursor: 'pointer', 
+                background: 'rgba(6, 8, 12, 0.4)',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(144, 202, 249, 0.1)'
+                e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.4)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(6, 8, 12, 0.4)'
+                e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.2)'
+              }}
             >
-            <div ref={spinRef} className={'control-spin'} style={{ display: 'flex' }}>
-              <RefreshCcw size={28} color="#9ad1ff" />
-            </div>
-          </button>
+              <div ref={spinRef} className={'control-spin'} style={{ display: 'flex' }}>
+                <RefreshCcw size={24} color="#90CAF9" />
+              </div>
+            </button>
+            <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 500 }}>Reset</span>
+          </div>
 
           {/* Fullscreen toggle */}
-          <button
-            title="Pantalla completa"
-            onClick={async () => {
-              if (!document.fullscreenElement && containerRef.current) {
-                try {
-                  await containerRef.current.requestFullscreen()
-                } catch (e) {
-                  /* ignore */
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <button
+              title="Toggle Fullscreen"
+              onClick={async () => {
+                if (!document.fullscreenElement && containerRef.current) {
+                  try {
+                    await containerRef.current.requestFullscreen()
+                  } catch (e) {}
+                  setIsFullscreen(true)
+                } else if (document.fullscreenElement) {
+                  await document.exitFullscreen()
+                  setIsFullscreen(false)
                 }
-                setIsFullscreen(true)
-              } else if (document.fullscreenElement) {
-                await document.exitFullscreen()
-                setIsFullscreen(false)
-              }
-            }}
-            style={{ width: 60, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 12, border: 'none', cursor: 'pointer', background: 'transparent' }}
+              }}
+              style={{ 
+                width: 54, 
+                height: 54, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                borderRadius: 10, 
+                border: isFullscreen ? '2px solid rgba(144, 202, 249, 0.6)' : '1px solid rgba(144, 202, 249, 0.2)', 
+                cursor: 'pointer', 
+                background: isFullscreen ? 'linear-gradient(135deg, rgba(110, 198, 255, 0.25), rgba(142, 123, 255, 0.25))' : 'rgba(6, 8, 12, 0.4)',
+                transition: 'all 0.2s ease',
+                boxShadow: isFullscreen ? '0 2px 8px rgba(110, 198, 255, 0.3)' : 'none'
+              }}
+              onMouseEnter={(e) => {
+                if (!isFullscreen) {
+                  e.currentTarget.style.background = 'rgba(144, 202, 249, 0.1)'
+                  e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.4)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isFullscreen) {
+                  e.currentTarget.style.background = 'rgba(6, 8, 12, 0.4)'
+                  e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.2)'
+                }
+              }}
             >
-            {isFullscreen ? <Minimize2 size={28} color="#9ad1ff" /> : <Maximize2 size={28} color="#9ad1ff" />}
-          </button>
+              {isFullscreen ? <Minimize2 size={24} color="#90CAF9" /> : <Maximize2 size={24} color="#90CAF9" />}
+            </button>
+            <span style={{ fontSize: 11, color: isFullscreen ? '#90CAF9' : '#6B7280', fontWeight: 500 }}>
+              {isFullscreen ? 'Exit' : 'Fullscreen'}
+            </span>
+          </div>
 
         </div>
       </div>
