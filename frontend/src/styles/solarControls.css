@@ -1,0 +1,29 @@
+.control-spin{ display:inline-block; transform-origin:50% 50%; }
+.control-spin svg{ display:block }
+/* spin animation: use keyframes so it completes a single forward rotation */
+.control-spin.spin svg{
+	animation: spin-once 0.7s cubic-bezier(.2,.9,.2,1) forwards;
+}
+@keyframes spin-once{
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+/* ensure buttons have subtle hover scale */
+div[style] > button:hover{ transform: scale(1.04); }
+div[style] > button{ transition: transform 160ms ease, box-shadow 160ms ease }
+
+/* Remove default focus/active outline/border effects on the control buttons */
+div[style] > button,
+div[style] > button:focus,
+div[style] > button:active,
+div[style] > button:focus-visible{
+	outline: none !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+
+/* If keyboard navigation is used, provide a subtle focus ring for accessibility */
+div[style] > button:focus-visible{
+	box-shadow: 0 0 0 3px rgba(154,209,255,0.12);
+}

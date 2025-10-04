@@ -1,0 +1,45 @@
+.aa-header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  backdrop-filter: blur(6px);
+  background: linear-gradient(180deg, rgba(8,10,12,0.7), rgba(8,10,12,0.5));
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.aa-header-inner{
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.aa-brand{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aa-logo{ width: 40px; height: 40px; border-radius: 8px; display:flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.02); }
+
+.aa-title-main{ font-weight: 700; color: #fff; font-size: 18px; }
+.aa-title-sub{ font-size: 12px; color: rgba(255,255,255,0.65); margin-top:2px }
+
+.aa-nav{ margin-left: 18px; display:flex; gap:12px }
+.aa-nav-link{ color: rgba(255,255,255,0.85); text-decoration:none; padding:8px 10px; border-radius:8px; font-weight:600 }
+.aa-nav-link:hover{ background: rgba(255,255,255,0.02) }
+
+.aa-actions{ margin-left:auto; display:flex; gap:10px; align-items:center }
+.aa-btn{ background: linear-gradient(90deg,#6EC6FF,#8E7BFF); color:#061018; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:700 }
+.aa-btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:rgba(255,255,255,0.85); padding:8px 12px; border-radius:8px; text-decoration:none }
+
+/* push content down to avoid being hidden under header */
+.body-with-header{ padding-top: 84px }
