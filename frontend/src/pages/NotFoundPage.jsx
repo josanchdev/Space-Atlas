@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import '../styles/notFound.css'
+import errorGif from '../assets/errorGif/gifError.gif'
 
 function NotFoundPage() {
   const navigate = useNavigate()
@@ -7,7 +8,9 @@ function NotFoundPage() {
   return (
     <div className="not-found-container">
       <div className="not-found-content">
-        <div className="error-code">404</div>
+        <div className="error-code">
+            <img src={errorGif} alt="Error animation" style={{ maxWidth: '100%', height: 'auto' }}/>
+        </div>
         <h1 className="error-title">Houston, We Have a Problem</h1>
         <p className="error-description">
           The page you're looking for doesn't exist in our solar system.
