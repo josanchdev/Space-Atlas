@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ArrowLeft } from 'lucide-react'
 import loadImages from '../utils/loadImages'
 import ModelLoader from '../components/ModelLoader'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
@@ -28,7 +29,7 @@ export default function PlanetPage() {
       <div>
         <h3>Images ({imagesData?.images?.length ?? 0})</h3>
         {/* Fullscreen overlay for the 3D model + left sidebar */}
-        <PlanetDetailView name={name} imagesData={imagesData} error={error} onClose={() => navigate('/')} />
+        <PlanetDetailView name={name} imagesData={imagesData} error={error} onClose={() => navigate(-1)} />
       </div>
     </main>
   )
@@ -70,9 +71,39 @@ function PlanetDetailView({ name, imagesData, error, onClose }) {
     <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.95)', display: 'flex', color: '#fff' }}>
       <button
         onClick={onClose}
-        style={{ position: 'absolute', left: 12, top: 12, zIndex: 10000, background: 'rgba(255,255,255,0.06)', color: '#fff', border: '1px solid rgba(255,255,255,0.08)', padding: '6px 10px', borderRadius: 6 }}
+        style={{
+          position: 'absolute',
+          left: 20,
+          top: 20,
+          zIndex: 10000,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+          padding: '12px 20px',
+          background: 'rgba(6, 8, 12, 0.7)',
+          border: '1px solid rgba(144, 202, 249, 0.3)',
+          borderRadius: 12,
+          color: '#90CAF9',
+          fontSize: 15,
+          fontWeight: 500,
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+          backdropFilter: 'blur(8px)',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'rgba(144, 202, 249, 0.15)'
+          e.currentTarget.style.borderColor = '#90CAF9'
+          e.currentTarget.style.transform = 'translateX(-3px)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(6, 8, 12, 0.7)'
+          e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.3)'
+          e.currentTarget.style.transform = 'translateX(0)'
+        }}
       >
-        Back
+        <ArrowLeft size={20} />
+        <span>Back</span>
       </button>
 
       {/* Left sidebar */}

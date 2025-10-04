@@ -10,10 +10,7 @@ export default function Header() {
           <div className="aa-logo">
             <img 
               src={logoSpaceAtlas} 
-              alt="Space Atlas Logo" 
-              width="100" 
-              height="100"
-              style={{ display: 'block' }}
+              alt="Space Atlas Logo"
             />
           </div>
           <div className="aa-title">
@@ -26,9 +23,11 @@ export default function Header() {
           <Link to="/news" className="aa-nav-link">News</Link>
           <Link to="/explore" className="aa-nav-link">Explore</Link>
           <Link to="/solar-system" className="aa-nav-link">Solar System</Link>
+          <Link to="/space-missions" className="aa-nav-link">Space Missions</Link>
         </nav>
 
         <div className="aa-actions">
+          <Link to="/login" className="aa-btn-secondary">Sign In</Link>
           <Link to="/scientists" className="aa-btn">Access for scientists</Link>
         </div>
       </div>
