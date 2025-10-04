@@ -2,7 +2,7 @@
 // Use Vite's import.meta.glob to resolve asset URLs for 3D models stored under src.
 // This returns real URLs that the dev server and build will serve.
 
-const files = import.meta.glob('/src/assets/3D-models/*.{glb,gltf,usdz}', { as: 'url', eager: true })
+const files = import.meta.glob('/src/assets/3D-models/*.{glb,gltf,usdz}', { query: '?url', import: 'default', eager: true })
 
 // Build a simple lookup: try to associate known planet keywords to a file URL.
 const KNOWN_KEYS = ['mercury','venus','earth','moon','mars','jupiter','saturn','uranus','neptune','pluto','sun']
