@@ -36,7 +36,8 @@ export default function LandingPage() {
 
   return (
     <div className="landing-wrapper">
-      <div className="landing-container">
+      {/* Hero Section - Full viewport height */}
+      <section className="landing-hero-section">
         <div className="landing-hero">
           <h1 className="landing-title">Space Atlas</h1>
           <p className="landing-subtitle">Explore. Upload. Discover.</p>
@@ -69,7 +70,7 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Sección de imágenes recientes de la comunidad científica */}
       <section className="recent-images-section">

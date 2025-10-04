@@ -2,11 +2,12 @@
 .landing-wrapper {
   width: 100%;
   overflow-x: hidden;
+  position: relative;
   margin-top: -84px;
-  padding-top: 84px;
 }
 
-.landing-container {
+/* Hero Section - Full viewport height */
+.landing-hero-section {
   min-height: 100vh;
   width: 100vw;
   display: flex;
@@ -15,13 +16,15 @@
   justify-content: center;
   background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
   padding: 2rem;
-  padding-top: 0;
+  padding-top: calc(84px + 2rem);
+  padding-bottom: 3rem;
   margin: 0;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
-.landing-container::before {
+.landing-hero-section::before {
   content: '';
   position: absolute;
   top: 0;
@@ -37,6 +40,7 @@
   background-size: 200px 200px;
   animation: twinkle 5s ease-in-out infinite;
   opacity: 0.5;
+  pointer-events: none;
 }
 
 @keyframes twinkle {
