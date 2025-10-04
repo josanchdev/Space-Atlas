@@ -20,10 +20,10 @@ export default function Header() {
         </Link>
 
         <nav className="aa-nav">
-          <NavLink to="/news" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"}>News</NavLink>
-          <NavLink to="/explore" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"}>Explore</NavLink>
-          <NavLink to="/solar-system" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"}>Solar System</NavLink>
-          <NavLink to="/space-missions" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"}>Space Missions</NavLink>
+          <NavLink to="/news" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"} id="title-font">News</NavLink>
+          <NavLink to="/explore" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"} id="title-font">Explore</NavLink>
+          <NavLink to="/solar-system" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"} id="title-font">Solar System</NavLink>
+          <NavLink to="/space-missions" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"} id="title-font">Space Missions</NavLink>
         </nav>
 
         <div className="aa-actions">
