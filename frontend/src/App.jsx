@@ -12,6 +12,7 @@ import ExplorePage from './pages/ExplorePage'
 import ScientistsPage from './pages/ScientistsPage'
 import SpaceMissionsPage from './pages/SpaceMissionsPage'
 import SpaceMissionDetailPage from './pages/SpaceMissionDetailPage'
+import SignInPage from './pages/SignInPage'
 
 function AppContent() {
   const location = useLocation()
@@ -36,6 +37,7 @@ function AppContent() {
           <Route path="/planets" element={<SolarSystemPage />} />
           <Route path="/space-missions" element={<SpaceMissionsPage />} />
           <Route path="/space-mission/:mission_name" element={<SpaceMissionDetailPage />} />
+          <Route path="/signin" element={<SignInPage />} />
           <Route path="/:name" element={<PlanetPage />} />
           <Route path="/scientists" element={<ScientistsPage />} />
         </Routes>

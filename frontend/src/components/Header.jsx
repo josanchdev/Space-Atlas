@@ -27,7 +27,7 @@ export default function Header() {
         </nav>
 
         <div className="aa-actions">
-          <Link to="/login" className="aa-btn-secondary">Sign In</Link>
+          <Link to="/signin" className="aa-btn-secondary">Sign In</Link>
           <Link to="/scientists" className="aa-btn">Access for scientists</Link>
         </div>
       </div>
