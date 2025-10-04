@@ -8,7 +8,7 @@ export default function LandingPage() {
   return (
     <div className="landing-container">
       <div className="landing-hero">
-        <h1 className="landing-title">Apollo Atlas</h1>
+        <h1 className="landing-title">Space Atlas</h1>
         <p className="landing-subtitle">Explore. Upload. Discover.</p>
       </div>
       
