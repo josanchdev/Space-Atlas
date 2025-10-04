@@ -94,3 +94,6 @@ env/
 *.sqlite
 *.sqlite3
 *.db
+
+#Resources
+backend/resources
