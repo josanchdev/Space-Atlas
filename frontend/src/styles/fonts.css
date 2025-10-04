@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'SpaceAtlas';
+  src: url('../assets/font/NASALIZA.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+h1, h2, h3, h4, h5, h6, #title-font {
+  font-family: 'Orbitron', sans-serif;
+}

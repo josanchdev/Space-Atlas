@@ -12,7 +12,7 @@ function ImageCard({ img }) {
         )}
       </div>
       <div className="image-card-content">
-        <div className="image-card-title">{img.title || img.filename}</div>
+        <div className="image-card-title" id="title-font">{img.title || img.filename}</div>
         <div className="image-card-body">{img.body || 'Unknown body'}</div>
       </div>
     </div>
