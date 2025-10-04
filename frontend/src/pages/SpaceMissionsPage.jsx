@@ -1,39 +1,42 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import artemisImage from '../assets/cardImages/Mision1/ArtemisImage.webp'
+import europaImage from '../assets/cardImages/Mision1/Europa_Cliper.webp'
 import marsImage from '../assets/cardImages/Mision2/NasaMars.webp'
+import artemisImage from '../assets/cardImages/Mision3/ArtemisImage.webp'
 import '../styles/spaceMissions.css'
 
 export default function SpaceMissionsPage() {
   const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [notified, setNotified] = useState(false)
   const navigate = useNavigate()
 
-  // Tres misiones para el carrusel
+  // Three missions for the carousel
   const missions = [
     {
       id: 1,
-      name: 'MISIÓN ARTEMIS',
-      name_en: 'artemis',
-      description: 'Return humans to the Moon and establish a sustainable presence for exploration and science.',
-      year: '2024-2026',
-      image: artemisImage
+      name: 'EUROPA CLIPPER',
+      name_en: 'europa',
+      description: 'Explore Jupiter\'s icy moon Europa to investigate its potential habitability and search for conditions suitable for life.',
+      year: '2024-2030',
+      image: europaImage
     },
     {
       id: 2,
-      name: 'SONDA VOYAGER  ',
+      name: 'MARS ROVERS',
       name_en: 'mars',
-      description: 'Pioneer the future of human spaceflight and establish the first colony on the Red Planet.',
-      year: '2030-2035',
-      image: marsImage // Placeholder para imagen futura
+      description: 'Robotic explorers discovering the secrets of the Red Planet, searching for signs of ancient life and paving the way for human exploration.',
+      year: '2020-Present',
+      image: marsImage
     },
     {
       id: 3,
-      name: 'GATEWAY STATION',
-      name_en: 'gateway',
-      description: 'Build a lunar orbiting outpost to support deep space exploration and scientific research.',
-      year: '2027-2029',
-      image: null // Placeholder para imagen futura
+      name: 'ARTEMIS II',
+      name_en: 'artemis',
+      description: 'The first crewed mission of the Artemis program. Four astronauts will fly aboard the Orion spacecraft on a lunar flyby, paving the way for sustainable human exploration of the Moon and future crewed missions to Mars.',
+      year: 'April 2026',
+      image: artemisImage,
+      isLocked: true // Future mission - coming soon
     }
   ]
 
@@ -43,6 +46,10 @@ export default function SpaceMissionsPage() {
 
   const selectMission = (missionNameEn) => {
     navigate(`/space-mission/${missionNameEn}`)
+  }
+
+  const handleNotifyMe = () => {
+    setNotified(true)
   }
 
   const nextSlide = () => {
@@ -86,15 +93,76 @@ export default function SpaceMissionsPage() {
                 <div className="mission-card">
                   {/* Left Side - Mission Info */}
                   <div className="mission-info">
-                    <h2 className="mission-name">{mission.name}</h2>
+                    <div className="mission-header">
+                      <h2 className="mission-name">{mission.name}</h2>
+                      {mission.isLocked && (
+                        <svg 
+                          className="lock-icon" 
+                          width="28" 
+                          height="28" 
+                          viewBox="0 0 24 24" 
+                          fill="none" 
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path 
+                            d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM15.1 8H8.9V6C8.9 4.29 10.29 2.9 12 2.9C13.71 2.9 15.1 4.29 15.1 6V8Z" 
+                            fill="#ffa726"
+                          />
+                        </svg>
+                      )}
+                    </div>
                     <p className="mission-year">{mission.year}</p>
                     <p className="mission-description">{mission.description}</p>
-                    <button 
-                      className="select-mission-button"
-                      onClick={() => selectMission(mission.name_en)}
-                    >
-                      Seleccionar misión
-                    </button>
+                    {mission.isLocked ? (
+                      notified ? (
+                        <button 
+                          className="notify-me-button notified"
+                          disabled
+                        >
+                          <svg 
+                            width="18" 
+                            height="18" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg"
+                            style={{ marginRight: '8px' }}
+                          >
+                            <path 
+                              d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" 
+                              fill="currentColor"
+                            />
+                          </svg>
+                          Notification Set
+                        </button>
+                      ) : (
+                        <button 
+                          className="notify-me-button"
+                          onClick={handleNotifyMe}
+                        >
+                          <svg 
+                            width="18" 
+                            height="18" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg"
+                            style={{ marginRight: '8px' }}
+                          >
+                            <path 
+                              d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.37 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.64 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z" 
+                              fill="currentColor"
+                            />
+                          </svg>
+                          Notify Me
+                        </button>
+                      )
+                    ) : (
+                      <button 
+                        className="select-mission-button"
+                        onClick={() => selectMission(mission.name_en)}
+                      >
+                        Select Mission
+                      </button>
+                    )}
                   </div>
 
                   {/* Right Side - Image Placeholder */}
