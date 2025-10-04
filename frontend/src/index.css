@@ -77,6 +77,61 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Estilos personalizados para la scrollbar */
+/* Para navegadores basados en Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090A0F;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #5A9FD4, #90CAF9, #B3E5FC);
+  border-radius: 10px;
+  border: 2px solid #090A0F;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #90CAF9, #B3E5FC, #E1F5FE);
+  border: 2px solid #1B2735;
+  box-shadow: 0 0 10px rgba(144, 202, 249, 0.5);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #5A9FD4, #90CAF9, #B3E5FC);
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #90CAF9 #090A0F;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border: 1px solid #0a0e27;
+  }
+}
+
+/* Scrollbar para pantallas pequeñas (móviles) */
+@media (max-width: 480px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
