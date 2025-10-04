@@ -8,8 +8,11 @@
   align-items: center;
   justify-content: center;
   padding: 0;
+  padding-top: 84px;
   position: relative;
   overflow: hidden;
+  margin-top: -84px;
+  box-sizing: border-box;
 }
 
 .missions-container::before {
