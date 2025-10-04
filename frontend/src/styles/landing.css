@@ -1,0 +1,133 @@
+.landing-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, white, transparent),
+    radial-gradient(2px 2px at 60px 70px, white, transparent),
+    radial-gradient(1px 1px at 50px 50px, white, transparent),
+    radial-gradient(1px 1px at 130px 80px, white, transparent),
+    radial-gradient(2px 2px at 90px 10px, white, transparent);
+  background-size: 200px 200px;
+  animation: twinkle 5s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.landing-hero {
+  text-align: center;
+  margin-bottom: 4rem;
+  z-index: 1;
+}
+
+.landing-title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.landing-subtitle {
+  font-size: 1.5rem;
+  color: #90CAF9;
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+.landing-cards {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  z-index: 1;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.landing-card {
+  flex: 1;
+  min-width: 320px;
+  max-width: 500px;
+  background: rgba(15, 15, 25, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(144, 202, 249, 0.2);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.landing-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(144, 202, 249, 0.6);
+  box-shadow: 0 20px 40px rgba(144, 202, 249, 0.2);
+}
+
+.card-icon {
+  color: #90CAF9;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.landing-card:hover .card-icon {
+  transform: scale(1.1);
+  color: #FFD54F;
+}
+
+.card-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 1rem 0;
+}
+
+.card-description {
+  font-size: 1.1rem;
+  color: #B0BEC5;
+  margin: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .landing-title {
+    font-size: 2.5rem;
+  }
+  
+  .landing-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .landing-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .landing-card {
+    max-width: 100%;
+  }
+}

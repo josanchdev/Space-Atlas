@@ -1,0 +1,242 @@
+.missions-container {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.missions-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, white, transparent),
+    radial-gradient(2px 2px at 60px 70px, white, transparent),
+    radial-gradient(1px 1px at 50px 50px, white, transparent),
+    radial-gradient(1px 1px at 130px 80px, white, transparent);
+  background-size: 200px 200px;
+  opacity: 0.3;
+}
+
+.missions-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  z-index: 1;
+}
+
+.missions-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(50, 50, 60, 0.6);
+  padding: 1rem 3rem;
+  border-radius: 50px;
+  display: inline-block;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.mission-carousel {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1400px;
+  width: 100%;
+  z-index: 1;
+  margin-bottom: 2rem;
+}
+
+.carousel-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.carousel-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.mission-display {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.mission-planet {
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mission-planet img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.placeholder-planet {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(100, 100, 120, 0.2) 0%, transparent 70%);
+}
+
+.planet-circle {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 60px rgba(102, 126, 234, 0.4);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.mission-info {
+  text-align: center;
+  max-width: 600px;
+}
+
+.mission-name {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.mission-year {
+  font-size: 1.2rem;
+  color: #90CAF9;
+  margin: 0 0 1rem 0;
+  font-weight: 300;
+}
+
+.mission-description {
+  font-size: 1.2rem;
+  color: #B0BEC5;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.select-mission-button {
+  background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 100%);
+  color: #fff;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1;
+  margin-bottom: 2rem;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+}
+
+.select-mission-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+}
+
+.mission-indicators {
+  display: flex;
+  gap: 1rem;
+  z-index: 1;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  background: #00d4ff;
+  transform: scale(1.3);
+}
+
+.loading,
+.no-missions {
+  font-size: 1.5rem;
+  color: #90CAF9;
+  text-align: center;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .missions-title {
+    font-size: 1.8rem;
+    padding: 0.8rem 2rem;
+  }
+
+  .mission-carousel {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .carousel-button {
+    width: 50px;
+    height: 50px;
+  }
+
+  .carousel-button.prev,
+  .carousel-button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .carousel-button.prev {
+    left: 1rem;
+  }
+
+  .carousel-button.next {
+    right: 1rem;
+  }
+
+  .mission-name {
+    font-size: 2rem;
+  }
+
+  .planet-circle {
+    width: 200px;
+    height: 200px;
+  }
+}
