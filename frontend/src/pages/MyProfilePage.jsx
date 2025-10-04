@@ -110,7 +110,10 @@ export default function MyProfilePage() {
           <div className="profile-actions">
             <button 
               className="action-button primary"
-              onClick={() => navigate(currentUser.role === 'scientist' ? '/content-manager' : '/mybookmarks')}
+              onClick={() => {
+                window.scrollTo(0, 0)
+                navigate(currentUser.role === 'scientist' ? '/content-manager' : '/mybookmarks')
+              }}
             >
               {currentUser.role === 'scientist' ? 'Manage Content' : 'View My Bookmarks'}
             </button>

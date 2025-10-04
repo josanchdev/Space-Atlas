@@ -37,6 +37,19 @@ export default function Header() {
     }
   }, [showUserMenu])
 
+  useEffect(() => {
+    // Bloquear/desbloquear scroll cuando el menú móvil está abierto
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isMenuOpen])
+
   const handleNavClick = (path) => {
     // Cerrar el menú móvil
     setIsMenuOpen(false)
@@ -63,13 +76,27 @@ export default function Header() {
     setIsMenuOpen(!isMenuOpen)
   }
 
+  const handleOverlayClick = () => {
+    setIsMenuOpen(false)
+  }
+
   const toggleUserMenu = () => {
     setShowUserMenu(!showUserMenu)
   }
 
   return (
-    <header className="aa-header">
-      <div className="aa-header-inner">
+    <>
+      {/* Overlay para cerrar el menú móvil */}
+      {isMenuOpen && (
+        <div 
+          className="aa-menu-overlay" 
+          onClick={handleOverlayClick}
+          aria-hidden="true"
+        />
+      )}
+      
+      <header className="aa-header">
+        <div className="aa-header-inner">
         <Link 
           to="/" 
           onClick={() => handleNavClick('/')}
@@ -262,5 +289,6 @@ export default function Header() {
         </div>
       </div>
     </header>
+    </>
   )
 }
