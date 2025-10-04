@@ -5,6 +5,16 @@ import errorGif from '../assets/errorGif/gifError.gif'
 function NotFoundPage() {
   const navigate = useNavigate()
 
+  const handleGoHome = () => {
+    window.scrollTo(0, 0)
+    navigate('/')
+  }
+
+  const handleExplore = () => {
+    window.scrollTo(0, 0)
+    navigate('/solar-system')
+  }
+
   return (
     <div className="not-found-container">
       <div className="not-found-content">
@@ -21,13 +31,13 @@ function NotFoundPage() {
         <div className="error-actions">
           <button 
             className="btn-home" 
-            onClick={() => navigate('/')}
+            onClick={handleGoHome}
           >
             Go Home
           </button>
           <button 
             className="btn-explore" 
-            onClick={() => navigate('/solar-system')}
+            onClick={handleExplore}
           >
             Explore Solar System
           </button>

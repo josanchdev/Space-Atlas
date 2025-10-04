@@ -23,9 +23,20 @@ export default function SignInPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Aquí irá la lógica de autenticación
-    console.log('Form submitted:', formData)
-    // Por ahora, redirigir a la página principal
+    
+    // Guardar usuario en localStorage
+    const userData = {
+      name: formData.name || formData.email.split('@')[0],
+      email: formData.email,
+      role: 'user',
+      isLoggedIn: true
+    }
+    
+    localStorage.setItem('currentUser', JSON.stringify(userData))
+    
+    console.log('User logged in:', userData)
+    
+    // Redirigir a la página principal
     navigate('/')
   }
 

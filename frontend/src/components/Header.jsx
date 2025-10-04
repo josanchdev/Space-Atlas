@@ -1,15 +1,46 @@
-import { useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { UserCircle, LogOut, Bookmark, Settings } from 'lucide-react'
 import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.webp'
 import '../styles/header.css'
 
 export default function Header() {
   const location = useLocation()
+  const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
+  const [showUserMenu, setShowUserMenu] = useState(false)
+  const userMenuRef = useRef(null)
+
+  useEffect(() => {
+    // Cargar usuario desde localStorage
+    const user = localStorage.getItem('currentUser')
+    if (user) {
+      setCurrentUser(JSON.parse(user))
+    }
+  }, [location.pathname]) // Recargar cuando cambie la ruta
+
+  useEffect(() => {
+    // Cerrar menú de usuario cuando se haga clic fuera
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setShowUserMenu(false)
+      }
+    }
+
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showUserMenu])
 
   const handleNavClick = (path) => {
     // Cerrar el menú móvil
     setIsMenuOpen(false)
+    setShowUserMenu(false)
     
     // Si ya estamos en la página actual, hacer scroll suave al top
     if (location.pathname === path) {
@@ -20,8 +51,20 @@ export default function Header() {
     }
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser')
+    setCurrentUser(null)
+    setShowUserMenu(false)
+    setIsMenuOpen(false)
+    navigate('/')
+  }
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const toggleUserMenu = () => {
+    setShowUserMenu(!showUserMenu)
   }
 
   return (
@@ -93,38 +136,129 @@ export default function Header() {
           
           {/* Actions dentro del menú móvil */}
           <div className="aa-nav-actions">
-            <Link 
-              to="/signin" 
-              onClick={() => handleNavClick('/signin')}
-              className="aa-btn-secondary"
-            >
-              Sign In
-            </Link>
-            <Link 
-              to="/scientist-auth" 
-              onClick={() => handleNavClick('/scientist-auth')}
-              className="aa-btn"
-            >
-              Access for scientists
-            </Link>
+            {currentUser ? (
+              <>
+                <Link 
+                  to="/myprofile" 
+                  onClick={() => handleNavClick('/myprofile')}
+                  className="aa-btn-secondary"
+                >
+                  <UserCircle size={16} />
+                  My Profile
+                </Link>
+                <Link 
+                  to={currentUser.role === 'scientist' ? '/content-manager' : '/mybookmarks'}
+                  onClick={() => handleNavClick(currentUser.role === 'scientist' ? '/content-manager' : '/mybookmarks')}
+                  className="aa-btn"
+                >
+                  {currentUser.role === 'scientist' ? (
+                    <>
+                      <Settings size={16} />
+                      Manage Content
+                    </>
+                  ) : (
+                    <>
+                      <Bookmark size={16} />
+                      My Bookmarks
+                    </>
+                  )}
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  className="aa-btn-ghost"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link 
+                  to="/signin" 
+                  onClick={() => handleNavClick('/signin')}
+                  className="aa-btn-secondary"
+                >
+                  Sign In
+                </Link>
+                <Link 
+                  to="/scientist-auth" 
+                  onClick={() => handleNavClick('/scientist-auth')}
+                  className="aa-btn"
+                >
+                  Access for scientists
+                </Link>
+              </>
+            )}
           </div>
         </nav>
 
         <div className="aa-actions aa-actions-desktop">
-          <Link 
-            to="/signin" 
-            onClick={() => handleNavClick('/signin')}
-            className="aa-btn-secondary"
-          >
-            Sign In
-          </Link>
-          <Link 
-            to="/scientist-auth" 
-            onClick={() => handleNavClick('/scientist-auth')}
-            className="aa-btn"
-          >
-            Access for scientists
-          </Link>
+          {currentUser ? (
+            <div className="user-menu-wrapper" ref={userMenuRef}>
+              <button 
+                className="user-menu-button"
+                onClick={toggleUserMenu}
+              >
+                <UserCircle size={24} />
+                <span>{currentUser.name}</span>
+              </button>
+              
+              {showUserMenu && (
+                <div className="user-dropdown">
+                  <Link 
+                    to="/myprofile" 
+                    onClick={() => handleNavClick('/myprofile')}
+                    className="user-dropdown-item"
+                  >
+                    <UserCircle size={18} />
+                    My Profile
+                  </Link>
+                  <Link 
+                    to={currentUser.role === 'scientist' ? '/content-manager' : '/mybookmarks'}
+                    onClick={() => handleNavClick(currentUser.role === 'scientist' ? '/content-manager' : '/mybookmarks')}
+                    className="user-dropdown-item"
+                  >
+                    {currentUser.role === 'scientist' ? (
+                      <>
+                        <Settings size={18} />
+                        Manage Content
+                      </>
+                    ) : (
+                      <>
+                        <Bookmark size={18} />
+                        My Bookmarks
+                      </>
+                    )}
+                  </Link>
+                  <div className="user-dropdown-divider"></div>
+                  <button 
+                    onClick={handleLogout}
+                    className="user-dropdown-item"
+                  >
+                    <LogOut size={18} />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link 
+                to="/signin" 
+                onClick={() => handleNavClick('/signin')}
+                className="aa-btn-secondary"
+              >
+                Sign In
+              </Link>
+              <Link 
+                to="/scientist-auth" 
+                onClick={() => handleNavClick('/scientist-auth')}
+                className="aa-btn"
+              >
+                Access for scientists
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

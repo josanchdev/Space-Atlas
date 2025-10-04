@@ -103,9 +103,22 @@ export default function ScientistAuthPage() {
       }
     }
 
-    // Aquí irá la lógica de autenticación
-    console.log('Scientist form submitted:', formData)
-    navigate('/scientists')
+    // Guardar científico en localStorage
+    const userData = {
+      name: formData.name || formData.email.split('@')[0],
+      email: formData.email,
+      orcid: formData.orcid,
+      institution: formData.institution,
+      role: 'scientist',
+      isLoggedIn: true
+    }
+    
+    localStorage.setItem('currentUser', JSON.stringify(userData))
+    
+    console.log('Scientist logged in:', userData)
+    
+    // Redirigir a la página principal
+    navigate('/')
   }
 
   const toggleMode = () => {
