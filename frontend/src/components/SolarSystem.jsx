@@ -363,7 +363,7 @@ export default function SolarSystem() {
       </Canvas>
 
       {/* Back button - top left */}
-      <div style={{ position: 'absolute', left: 20, top: 20, zIndex: 1001 }}>
+      <div className="solar-back-button-container" style={{ position: 'absolute', left: 20, top: 20, zIndex: 1001 }}>
         <button
           onClick={() => navigate(-1)}
           style={{
@@ -399,7 +399,7 @@ export default function SolarSystem() {
       </div>
 
       {/* Control buttons - top right */}
-      <div style={{ position: 'absolute', right: 20, top: 20, zIndex: 1001 }}>
+      <div className="solar-controls-container" style={{ position: 'absolute', right: 20, top: 20, zIndex: 1001 }}>
         <div style={{ 
           display: 'flex', 
           gap: 10, 

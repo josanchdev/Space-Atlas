@@ -1,0 +1,170 @@
+/* ============================================
+   PLANET PAGE - SIDEBAR RESPONSIVE
+   ============================================ */
+
+/* Estilos base para botones */
+.planet-back-button,
+.planet-menu-toggle {
+  position: absolute;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(6, 8, 12, 0.7);
+  border: 1px solid rgba(144, 202, 249, 0.3);
+  border-radius: 12px;
+  color: #90CAF9;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.planet-back-button {
+  left: 20px;
+  top: 20px;
+}
+
+.planet-menu-toggle {
+  right: 20px;
+  top: 20px;
+  display: none;
+}
+
+/* Hover para desktop (solo con mouse) */
+@media (hover: hover) and (pointer: fine) {
+  .planet-back-button:hover {
+    background: rgba(144, 202, 249, 0.15);
+    border-color: #90CAF9;
+    transform: translateX(-3px);
+  }
+
+  .planet-menu-toggle:hover {
+    background: rgba(144, 202, 249, 0.15);
+    border-color: #90CAF9;
+  }
+}
+
+/* Active para móvil (touch) */
+@media (hover: none) and (pointer: coarse) {
+  .planet-back-button:active {
+    background: rgba(144, 202, 249, 0.15);
+    border-color: #90CAF9;
+  }
+
+  .planet-menu-toggle:active {
+    background: rgba(144, 202, 249, 0.15);
+    border-color: #90CAF9;
+  }
+}
+
+/* Desktop: sidebar siempre visible */
+.planet-sidebar {
+  background: rgba(6, 8, 12, 0.7);
+  transition: transform 0.3s ease;
+}
+
+/* Canvas touch-friendly */
+canvas {
+  touch-action: none; /* Prevenir zoom y scroll en el canvas */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Eliminar bordes/outlines en botones al hacer clic */
+.planet-menu-toggle,
+.planet-menu-toggle:focus,
+.planet-menu-toggle:active,
+.planet-menu-toggle:focus-visible,
+.planet-back-button,
+.planet-back-button:focus,
+.planet-back-button:active,
+.planet-back-button:focus-visible {
+  outline: none !important;
+}
+
+/* Focus visible para accesibilidad con teclado */
+.planet-menu-toggle:focus-visible,
+.planet-back-button:focus-visible {
+  box-shadow: 0 0 0 3px rgba(144, 202, 249, 0.3) !important;
+}
+
+/* ============================================
+   MOBILE STYLES
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Mostrar el botón de menú en móvil */
+  .planet-menu-toggle {
+    display: flex !important;
+  }
+
+  /* Ajustar botón de back para que no se solape */
+  .planet-back-button {
+    left: 10px !important;
+    top: 10px !important;
+    padding: 10px 16px !important;
+    font-size: 14px !important;
+  }
+
+  .planet-back-button span {
+    display: none;
+  }
+
+  /* Sidebar como overlay desplegable en móvil */
+  .planet-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 90% !important;
+    max-width: 360px !important;
+    min-width: unset !important;
+    transform: translateX(-100%) !important;
+    z-index: 9998 !important;
+    background: rgba(6, 8, 12, 0.98) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.8) !important;
+    padding-top: 70px !important;
+  }
+
+  /* Sidebar abierto */
+  .planet-sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  /* Overlay oscuro cuando el sidebar está abierto */
+  .planet-sidebar.open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .planet-sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .planet-menu-toggle {
+    right: 10px !important;
+    top: 10px !important;
+    padding: 10px 16px !important;
+    font-size: 14px !important;
+  }
+
+  .planet-menu-toggle span {
+    display: none;
+  }
+}
