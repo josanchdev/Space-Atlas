@@ -1,26 +1,61 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import '../styles/scientistsPage.css'
 
 export default function ScientistsPage() {
   const [planet, setPlanet] = useState('earth')
   const [file, setFile] = useState(null)
   const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState('info')
   const [markers, setMarkers] = useState([])
-  const [markerForm, setMarkerForm] = useState({ x: '', y: '', title: '' })
+  const [images, setImages] = useState([])
+  const [markerForm, setMarkerForm] = useState({ x: '', y: '', title: '', imageId: '' })
+  const [isUploading, setIsUploading] = useState(false)
+
+  const planets = ['sun', 'mercury', 'venus', 'earth', 'moon', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'other']
+
+  useEffect(() => {
+    loadImages()
+    loadMarkers()
+  }, [planet])
+
+  async function loadImages() {
+    try {
+      const res = await fetch(`/api/images/${planet}`)
+      if (!res.ok) throw new Error('Failed to load images')
+      const json = await res.json()
+      setImages(json.images || [])
+    } catch (err) {
+      console.error('Error loading images:', err)
+    }
+  }
 
   async function handleUpload(e) {
     e.preventDefault()
-    if (!file) return setMessage('Choose a TIFF file')
+    if (!file) {
+      showMessage('Please select a TIFF file', 'error')
+      return
+    }
+    
+    setIsUploading(true)
     const fd = new FormData()
     fd.append('planet', planet)
     fd.append('file', file)
-    setMessage('Uploading...')
+    showMessage('Uploading image...', 'info')
+    
     try {
       const res = await fetch('/api/images/upload-tiff', { method: 'POST', body: fd })
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || JSON.stringify(json))
-      setMessage('Uploaded: ' + (json.title || json.id))
+      showMessage(`Image uploaded successfully: ${json.title || json.id}`, 'success')
+      setFile(null)
+      // Reset file input
+      const fileInput = document.getElementById('file-input')
+      if (fileInput) fileInput.value = ''
+      loadImages()
     } catch (err) {
-      setMessage('Upload failed: ' + String(err))
+      showMessage('Upload failed: ' + String(err), 'error')
+    } finally {
+      setIsUploading(false)
     }
   }
 
@@ -31,64 +66,213 @@ export default function ScientistsPage() {
       const json = await res.json()
       setMarkers(json.markers || [])
     } catch (err) {
-      setMessage(String(err))
+      console.error('Error loading markers:', err)
     }
   }
 
   async function addMarker(e) {
     e.preventDefault()
+    if (!markerForm.x || !markerForm.y || !markerForm.title) {
+      showMessage('Please fill all marker fields', 'error')
+      return
+    }
+    
     try {
       const body = { planet, ...markerForm }
-      const res = await fetch('/api/markers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      const res = await fetch('/api/markers', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(body) 
+      })
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || JSON.stringify(json))
-      setMessage('Marker added')
-      setMarkerForm({ x: '', y: '', title: '' })
+      showMessage('Marker added successfully', 'success')
+      setMarkerForm({ x: '', y: '', title: '', imageId: '' })
       loadMarkers()
     } catch (err) {
-      setMessage(String(err))
+      showMessage('Failed to add marker: ' + String(err), 'error')
     }
   }
 
+  function showMessage(msg, type = 'info') {
+    setMessage(msg)
+    setMessageType(type)
+  }
+
+  function getImageNameById(imageId) {
+    const image = images.find(img => img.id === imageId)
+    return image ? image.title || image.filename : 'Unknown image'
+  }
+
   return (
-    <main style={{ padding: 20 }}>
-      <h2>Scientists access</h2>
+    <main className="scientists-page">
+      <div className="scientists-content">
+        <header className="scientists-header">
+          <h2>Scientists Portal</h2>
+          <p>Upload high-resolution TIFF images and create markers for planetary exploration</p>
+        </header>
 
-      <section style={{ marginTop: 16 }}>
-        <h3>Upload TIFF (will be converted to DZI)</h3>
-        <form onSubmit={handleUpload}>
-          <div>
-            <label>Planet: </label>
-            <input value={planet} onChange={(e) => setPlanet(e.target.value)} />
-          </div>
-          <div style={{ marginTop: 8 }}>
-            <input type="file" accept=".tif,.tiff,image/tiff" onChange={(e) => setFile(e.target.files?.[0] || null)} />
-          </div>
-          <div style={{ marginTop: 8 }}>
-            <button type="submit">Upload</button>
-          </div>
-        </form>
-        <div style={{ marginTop: 8, color: '#666' }}>{message}</div>
-      </section>
+        {/* Upload Section */}
+        <section className="upload-section">
+          <h3>Upload TIFF Image</h3>
+          <form className="upload-form" onSubmit={handleUpload}>
+            <div className="form-group">
+              <label htmlFor="planet-select">Select Planet</label>
+              <select 
+                id="planet-select"
+                value={planet} 
+                onChange={(e) => setPlanet(e.target.value)}
+                className="planet-selector"
+              >
+                {planets.map(p => (
+                  <option key={p} value={p}>
+                    {p === 'other' ? 'Other images' : p.charAt(0).toUpperCase() + p.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="form-group">
+              <label>Image File (.tiff format)</label>
+              <div className="file-input-wrapper">
+                <input 
+                  id="file-input"
+                  type="file" 
+                  accept=".tif,.tiff,image/tiff" 
+                  onChange={(e) => setFile(e.target.files?.[0] || null)}
+                />
+                <label 
+                  htmlFor="file-input" 
+                  className={`file-input-label ${file ? 'has-file' : ''}`}
+                >
+                  <span>{file ? `📄 ${file.name}` : '📁 Choose a TIFF file'}</span>
+                </label>
+              </div>
+            </div>
 
-      <section style={{ marginTop: 24 }}>
-        <h3>Markers</h3>
-        <div style={{ marginBottom: 8 }}>
-          <button onClick={loadMarkers}>Load markers for {planet}</button>
+            <button 
+              type="submit" 
+              className="upload-button"
+              disabled={isUploading || !file}
+            >
+              {isUploading ? 'Uploading...' : 'Upload Image'}
+            </button>
+          </form>
+
+          {message && (
+            <div className={`status-message ${messageType}`}>
+              {message}
+            </div>
+          )}
+        </section>
+
+        {/* Images and Markers Grid */}
+        <div className="data-grid">
+          {/* Uploaded Images Section */}
+          <section className="data-section">
+            <h3>
+              <span>
+                <span className="section-icon">🖼️</span> Uploaded Images
+              </span>
+              <button onClick={loadImages} className="refresh-button">
+                🔄 Refresh
+              </button>
+            </h3>
+            
+            <div className="images-list">
+              {images.length === 0 ? (
+                <div className="empty-state">
+                  No images uploaded yet
+                </div>
+              ) : (
+                images.map((img) => (
+                  <div key={img.id} className="image-item">
+                    <div className="image-item-title">
+                      {img.title || img.filename || `Image ${img.id}`}
+                    </div>
+                    <div className="image-item-meta">
+                      <span className="image-item-planet">{planet}</span>
+                      {img.uploadedAt && (
+                        <span>{new Date(img.uploadedAt).toLocaleDateString()}</span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </section>
+
+          {/* Markers Section */}
+          <section className="data-section">
+            <h3>
+              <span>
+                <span className="section-icon">📍</span> Markers
+              </span>
+              <button onClick={loadMarkers} className="refresh-button">
+                🔄 Refresh
+              </button>
+            </h3>
+
+            <div className="add-marker-form">
+              <h4>Add New Marker</h4>
+              <form onSubmit={addMarker}>
+                <div className="marker-inputs">
+                  <input 
+                    type="number"
+                    step="any"
+                    placeholder="X coordinate" 
+                    value={markerForm.x} 
+                    onChange={(e) => setMarkerForm({ ...markerForm, x: e.target.value })}
+                    className="marker-input"
+                  />
+                  <input 
+                    type="number"
+                    step="any"
+                    placeholder="Y coordinate" 
+                    value={markerForm.y} 
+                    onChange={(e) => setMarkerForm({ ...markerForm, y: e.target.value })}
+                    className="marker-input"
+                  />
+                  <input 
+                    type="text"
+                    placeholder="Marker title" 
+                    value={markerForm.title} 
+                    onChange={(e) => setMarkerForm({ ...markerForm, title: e.target.value })}
+                    className="marker-input"
+                  />
+                  <button type="submit" className="add-marker-button">
+                    + Add
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <div className="markers-list">
+              {markers.length === 0 ? (
+                <div className="empty-state">
+                  No markers created yet
+                </div>
+              ) : (
+                markers.map((m) => (
+                  <div key={m.id} className="marker-item">
+                    <div className="marker-item-title">
+                      {m.title}
+                    </div>
+                    <div className="marker-item-coords">
+                      X: {m.x}, Y: {m.y}
+                    </div>
+                    {m.imageId && (
+                      <div className="marker-item-image">
+                        Image: {getImageNameById(m.imageId)}
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </section>
         </div>
-        <form onSubmit={addMarker}>
-          <input placeholder="x" value={markerForm.x} onChange={(e) => setMarkerForm({ ...markerForm, x: e.target.value })} />
-          <input placeholder="y" value={markerForm.y} onChange={(e) => setMarkerForm({ ...markerForm, y: e.target.value })} />
-          <input placeholder="title" value={markerForm.title} onChange={(e) => setMarkerForm({ ...markerForm, title: e.target.value })} />
-          <button type="submit">Add marker</button>
-        </form>
-
-        <ul>
-          {markers.map((m) => (
-            <li key={m.id}>{String(m.title)} — {m.x},{m.y}</li>
-          ))}
-        </ul>
-      </section>
+      </div>
     </main>
   )
 }
