@@ -285,7 +285,7 @@
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px);
+  text-decoration: underline;
   box-shadow: 0 8px 25px rgba(144, 202, 249, 0.5);
 }
 
@@ -305,8 +305,7 @@
 }
 
 .btn-secondary:hover {
-  background: rgba(144, 202, 249, 0.1);
-  transform: translateY(-3px);
+  text-decoration: underline;
 }
 
 .about-image {
