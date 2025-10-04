@@ -1,13 +1,14 @@
 import { useParams } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Menu, X } from 'lucide-react'
 import loadImages from '../utils/loadImages'
 import ModelLoader from '../components/ModelLoader'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import * as THREE from 'three'
 import NotFoundPage from './NotFoundPage'
+import '../styles/planetPage.css'
 
 export default function PlanetPage() {
   const { name } = useParams()
@@ -34,7 +35,7 @@ export default function PlanetPage() {
   return (
     <main style={{ padding: 20 }}>
       <h2>{name?.charAt(0).toUpperCase() + name?.slice(1)}</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>⚠️ Couldn't load images from the server</p>}
       <div>
         <h3>Images ({imagesData?.images?.length ?? 0})</h3>
         {/* Fullscreen overlay for the 3D model + left sidebar */}
@@ -45,6 +46,8 @@ export default function PlanetPage() {
 }
 
 function PlanetDetailView({ name, imagesData, error, onClose }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  
   // Camera will animate from further away to a close distance, then the user can left-drag to rotate
   // lock scroll while overlay is open
   useEffect(() => {
@@ -78,45 +81,26 @@ function PlanetDetailView({ name, imagesData, error, onClose }) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.95)', display: 'flex', color: '#fff' }}>
+      {/* Back button */}
       <button
         onClick={onClose}
-        style={{
-          position: 'absolute',
-          left: 20,
-          top: 20,
-          zIndex: 10000,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          padding: '12px 20px',
-          background: 'rgba(6, 8, 12, 0.7)',
-          border: '1px solid rgba(144, 202, 249, 0.3)',
-          borderRadius: 12,
-          color: '#90CAF9',
-          fontSize: 15,
-          fontWeight: 500,
-          cursor: 'pointer',
-          transition: 'all 0.2s ease',
-          backdropFilter: 'blur(8px)',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'rgba(144, 202, 249, 0.15)'
-          e.currentTarget.style.borderColor = '#90CAF9'
-          e.currentTarget.style.transform = 'translateX(-3px)'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'rgba(6, 8, 12, 0.7)'
-          e.currentTarget.style.borderColor = 'rgba(144, 202, 249, 0.3)'
-          e.currentTarget.style.transform = 'translateX(0)'
-        }}
+        className="planet-back-button"
       >
         <ArrowLeft size={20} />
         <span>Back</span>
       </button>
 
+      {/* Toggle sidebar button (mobile only) */}
+      <button
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className="planet-menu-toggle"
+      >
+        {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+        <span>{isSidebarOpen ? 'Close' : 'Info'}</span>
+      </button>
+
       {/* Left sidebar */}
-      <aside style={{ width: 360, maxWidth: '36vw', minWidth: 280, padding: 20, boxSizing: 'border-box', overflowY: 'auto', borderRight: '1px solid rgba(255,255,255,0.04)' }}>
+      <aside className={`planet-sidebar ${isSidebarOpen ? 'open' : ''}`} style={{ width: 360, maxWidth: '36vw', minWidth: 280, padding: 20, boxSizing: 'border-box', overflowY: 'auto', borderRight: '1px solid rgba(255,255,255,0.04)' }}>
         <h2 style={{ marginTop: 4 }}>{name?.charAt(0).toUpperCase() + name?.slice(1)}</h2>
         <p style={{ color: 'rgba(255,255,255,0.8)' }}>Información del cuerpo celeste. Aquí puedes añadir descripción, fecha de las imágenes, fuente y coordenadas.</p>
 
@@ -124,7 +108,7 @@ function PlanetDetailView({ name, imagesData, error, onClose }) {
           <strong>Imágenes DZI ({entries.length})</strong>
         </div>
 
-        {error && <p style={{ color: '#ff8b8b' }}>{error}</p>}
+        {error && <p style={{ color: '#ff8b8b', marginTop: 12, padding: 10, background: 'rgba(255, 59, 48, 0.1)', borderRadius: 6, border: '1px solid rgba(255, 59, 48, 0.3)' }}>⚠️ Couldn't load images from the server</p>}
 
         <ImageSearchList entries={entries} planetName={name} />
       </aside>
@@ -219,19 +203,23 @@ function PlanetModel({ name }) {
   })
 
   function onPointerDown(e) {
-    if (e.button !== 0) return // only left click
+    // Allow both mouse left click (button 0) and touch events (button -1)
+    if (e.pointerType === 'mouse' && e.button !== 0) return
     dragging.current = true
-    prev.current.x = e.clientX
-    prev.current.y = e.clientY
+    // Use clientX/clientY for both mouse and touch
+    prev.current.x = e.clientX || e.pageX
+    prev.current.y = e.clientY || e.pageY
     e.target.setPointerCapture(e.pointerId)
   }
 
   function onPointerMove(e) {
     if (!dragging.current || !ref.current) return
-    const dx = e.clientX - prev.current.x
-    const dy = e.clientY - prev.current.y
-    prev.current.x = e.clientX
-    prev.current.y = e.clientY
+    const currentX = e.clientX || e.pageX
+    const currentY = e.clientY || e.pageY
+    const dx = currentX - prev.current.x
+    const dy = currentY - prev.current.y
+    prev.current.x = currentX
+    prev.current.y = currentY
     // rotate both axes
     ref.current.rotation.y += dx * 0.01
     ref.current.rotation.x += dy * 0.01
@@ -240,15 +228,30 @@ function PlanetModel({ name }) {
   }
 
   function onPointerUp(e) {
+    if (!dragging.current) return
     dragging.current = false
     try {
       e.target.releasePointerCapture(e.pointerId)
-    } catch (e) {}
+    } catch (err) {
+      // Silently fail if pointer capture was already released
+    }
+  }
+
+  function onPointerCancel(e) {
+    // Handle cuando el pointer se cancela (ej: el usuario sale de la pantalla)
+    onPointerUp(e)
   }
 
   return (
     <group>
-      <group ref={ref} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerOut={onPointerUp}>
+      <group 
+        ref={ref} 
+        onPointerDown={onPointerDown} 
+        onPointerMove={onPointerMove} 
+        onPointerUp={onPointerUp} 
+        onPointerCancel={onPointerCancel}
+        onPointerOut={onPointerUp}
+      >
         <ModelLoader name={name} scale={1.6} />
       </group>
     </group>

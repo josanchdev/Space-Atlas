@@ -1,6 +1,8 @@
 .missions-container {
   min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
   height: 100vh;
+  height: 100dvh;
   background: #0a0a0a;
   color: #fff;
   display: flex;
@@ -381,6 +383,14 @@
 }
 
 @media (max-width: 968px) {
+  .missions-container {
+    height: 100vh;
+    height: 100dvh;
+    min-height: unset;
+    padding-top: 64px;
+    margin-top: -64px;
+  }
+
   .carousel-slide {
     padding: 2rem;
   }
@@ -427,6 +437,14 @@
 }
 
 @media (max-width: 640px) {
+  .missions-container {
+    height: 100vh;
+    height: 100dvh;
+    min-height: unset;
+    padding-top: 64px;
+    margin-top: -64px;
+  }
+
   .carousel-slide {
     padding: 1rem;
   }

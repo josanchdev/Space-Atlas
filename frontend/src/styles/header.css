@@ -341,7 +341,7 @@
   /* Mobile Navigation */
   .aa-nav {
     position: fixed;
-    top: -100vh;
+    top: 64px;
     left: 0;
     right: 0;
     background: rgba(8, 10, 12, 0.98);
@@ -349,19 +349,21 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     flex-direction: column;
     gap: 0;
-    padding: 20px 0;
+    padding: 0;
     margin-left: 0;
-    opacity: 0;
-    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
     pointer-events: none;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     z-index: 1000;
   }
 
   .aa-nav.active {
-    top: 64px;
-    opacity: 1;
+    max-height: calc(100vh - 64px);
+    padding: 20px 0;
     pointer-events: all;
+    overflow-y: auto;
   }
 
   .aa-nav-link {

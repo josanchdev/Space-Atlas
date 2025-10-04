@@ -355,6 +355,52 @@
 }
 
 /* ============================================
+   FORM OPTIONS
+   ============================================ */
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.remember-me:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.remember-me input[type="checkbox"] {
+  width: 0.85rem;
+  height: 0.85rem;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.forgot-password {
+  font-size: 0.75rem;
+  color: #60a5fa;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.forgot-password:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+/* ============================================
    VALIDATION MESSAGES
    ============================================ */
 
