@@ -1,0 +1,117 @@
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d1b4e 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+  padding-top: calc(84px + 2rem);
+  margin-top: -125px;
+  box-sizing: border-box;
+}
+
+.not-found-content {
+  text-align: center;
+  z-index: 10;
+  max-width: 600px;
+}
+
+.error-code {
+  font-size: clamp(8rem, 15vw, 12rem);
+  font-weight: bold;
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.error-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.error-description {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: #b8c1ec;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.error-subtitle {
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  color: #9fa8da;
+  margin-bottom: 2.5rem;
+  font-style: italic;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn-home,
+.btn-explore {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-home {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-home:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-explore {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+}
+
+.btn-explore:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
+}
+
+.btn-home:active,
+.btn-explore:active {
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .not-found-container {
+    padding: 1rem;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-home,
+  .btn-explore {
+    width: 100%;
+    max-width: 300px;
+  }
+}

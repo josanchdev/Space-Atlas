@@ -4,7 +4,6 @@ import './styles/header.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import LandingPage from './pages/LandingPage'
-import SolarSystemPage from './pages/SolarSystemPage'
 import PlanetPage from './pages/PlanetPage'
 import SolarSystem from './components/SolarSystem'
 import NewsPage from './pages/NewsPage'
@@ -13,6 +12,7 @@ import ScientistsPage from './pages/ScientistsPage'
 import SpaceMissionsPage from './pages/SpaceMissionsPage'
 import SpaceMissionDetailPage from './pages/SpaceMissionDetailPage'
 import SignInPage from './pages/SignInPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 function AppContent() {
   const location = useLocation()
@@ -34,12 +34,12 @@ function AppContent() {
           <Route path="/solar-system" element={<SolarSystem />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/planets" element={<SolarSystemPage />} />
           <Route path="/space-missions" element={<SpaceMissionsPage />} />
           <Route path="/space-mission/:mission_name" element={<SpaceMissionDetailPage />} />
           <Route path="/signin" element={<SignInPage />} />
-          <Route path="/:name" element={<PlanetPage />} />
           <Route path="/scientists" element={<ScientistsPage />} />
+          <Route path="/:name" element={<PlanetPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
       {!hideHeaderFooter && <Footer />}

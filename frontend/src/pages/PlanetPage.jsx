@@ -7,12 +7,21 @@ import ModelLoader from '../components/ModelLoader'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import * as THREE from 'three'
+import NotFoundPage from './NotFoundPage'
 
 export default function PlanetPage() {
   const { name } = useParams()
   const [imagesData, setImagesData] = useState(null)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
+
+  // Lista de planetas válidos
+  const validCelestialBodies = ['sun', 'mercury', 'venus', 'earth', 'moon', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto']
+  
+  // Si el nombre no es válido, mostrar página de error
+  if (!validCelestialBodies.includes(name?.toLowerCase())) {
+    return <NotFoundPage />
+  }
 
   useEffect(() => {
     setImagesData(null)
