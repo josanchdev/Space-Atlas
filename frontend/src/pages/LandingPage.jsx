@@ -6,13 +6,18 @@ import '../styles/landing.css'
 export default function LandingPage() {
   const navigate = useNavigate()
 
+  const handleNavigation = (path) => {
+    window.scrollTo(0, 0)
+    navigate(path)
+  }
+
   // Datos de ejemplo de imágenes recientes de la comunidad científica
   const recentImages = [
     {
       id: 1,
       title: "James Webb's Deep Field",
       description: "The deepest and sharpest infrared image of the distant universe captured by JWST",
-      imageUrl: "https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=800&h=600&fit=crop",
+      imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.shopify.com%2Fs%2Ffiles%2F1%2F0535%2F0532%2F7303%2Fproducts%2FA0001_-_JWST_Deep_Field-web.jpg%3Fv%3D1657644367&f=1?w=800&h=600&fit=crop",
       author: "NASA/ESA",
       date: "Oct 2025"
     },
@@ -20,7 +25,7 @@ export default function LandingPage() {
       id: 2,
       title: "Pillars of Creation",
       description: "Stunning new view of iconic stellar nursery in the Eagle Nebula",
-      imageUrl: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&h=600&fit=crop",
+      imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fscitechdaily.com%2Fimages%2FWebb-Pillars-of-Creation-scaled.jpg&f=1&nofb=1&ipt=4a014a6a24350f4f4a5012a510c237eab192b3655e852e1ca42871d555b7fa1a?w=800&h=600&fit=crop",
       author: "NASA/JPL",
       date: "Sep 2025"
     },
@@ -28,7 +33,7 @@ export default function LandingPage() {
       id: 3,
       title: "Southern Ring Nebula",
       description: "Unprecedented detail of planetary nebula revealing dying star's final moments",
-      imageUrl: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&h=600&fit=crop",
+      imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.esa.int%2Fvar%2Fesa%2Fstorage%2Fimages%2Fesa_multimedia%2Fimages%2F2023%2F08%2Fwebb_captures_detailed_beauty_of_ring_nebula_nircam_image%2F25047351-1-eng-GB%2FWebb_captures_detailed_beauty_of_Ring_Nebula_NIRCam_image_pillars.jpg&f=1&nofb=1&ipt=5ef047826c1206ad5ba3e3f9f494ee4f71e2837108b27defb33a6e6f3877df8d?w=800&h=600&fit=crop",
       author: "ESO",
       date: "Sep 2025"
     }
@@ -78,7 +83,7 @@ export default function LandingPage() {
         <div className="landing-cards">
           <div 
             className="landing-card"
-            onClick={() => navigate('/solar-system')}
+            onClick={() => handleNavigation('/solar-system')}
           >
             <div className="card-icon">
               <Globe size={64} />
@@ -91,7 +96,7 @@ export default function LandingPage() {
 
           <div 
             className="landing-card"
-            onClick={() => navigate('/space-missions')}
+            onClick={() => handleNavigation('/space-missions')}
           >
             <div className="card-icon">
               <Rocket size={64} />
@@ -174,7 +179,7 @@ export default function LandingPage() {
               of the universe, Space Atlas is your gateway to the stars.
             </p>
             <div className="about-cta">
-              <button className="btn-primary" onClick={() => navigate('/explore')}>
+              <button className="btn-primary" onClick={() => handleNavigation('/explore')}>
                 Start Exploring
                 <ArrowRight size={20} />
               </button>
@@ -213,11 +218,11 @@ export default function LandingPage() {
             Share your discoveries, contribute data, and help us map the universe.
           </p>
           <div className="cta-buttons">
-            <button className="btn-primary" onClick={() => navigate('/scientists')}>
+            <button className="btn-primary" onClick={() => handleNavigation('/scientist-auth')}>
               For Scientists
               <ArrowRight size={20} />
             </button>
-            <button className="btn-secondary" onClick={() => navigate('/explore')}>
+            <button className="btn-secondary" onClick={() => handleNavigation('/explore')}>
               Start Exploring
             </button>
           </div>

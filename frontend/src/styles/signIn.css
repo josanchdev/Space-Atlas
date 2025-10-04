@@ -132,19 +132,13 @@
 }
 
 .signin-logo:hover {
-  transform: scale(1.05) rotate(5deg);
+  transform: scale(1.05);
 }
 
 .logo-icon {
   color: #90CAF9;
-  animation: float 3s ease-in-out infinite;
   width: 32px;
   height: 32px;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
 }
 
 .signin-title {
