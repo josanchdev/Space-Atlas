@@ -332,3 +332,251 @@
     font-size: 14px;
   }
 }
+
+/* Hamburger Menu Button */
+.aa-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+  margin-left: auto;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.aa-hamburger:focus {
+  outline: none;
+}
+
+.aa-hamburger:active {
+  outline: none;
+}
+
+.aa-hamburger span {
+  width: 24px;
+  height: 2px;
+  background: #90CAF9;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  display: block;
+  position: absolute;
+}
+
+.aa-hamburger span:nth-child(1) {
+  top: 9px;
+}
+
+.aa-hamburger span:nth-child(2) {
+  top: 14px;
+}
+
+.aa-hamburger span:nth-child(3) {
+  top: 19px;
+}
+
+.aa-hamburger.active span:nth-child(1) {
+  top: 14px;
+  transform: rotate(45deg);
+}
+
+.aa-hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.aa-hamburger.active span:nth-child(3) {
+  top: 14px;
+  transform: rotate(-45deg);
+}
+
+/* Mobile Actions inside nav */
+.aa-nav-actions {
+  display: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .aa-header {
+    height: 64px;
+  }
+
+  .aa-header-inner {
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .aa-brand {
+    gap: 8px;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+
+  .aa-brand:focus {
+    outline: none;
+  }
+
+  .aa-brand:active {
+    outline: none;
+  }
+
+  .aa-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .aa-title-main {
+    font-size: 16px;
+  }
+
+  .aa-title-sub {
+    font-size: 10px;
+  }
+
+  /* Show hamburger on mobile */
+  .aa-hamburger {
+    display: flex;
+  }
+
+  /* Hide desktop actions */
+  .aa-actions-desktop {
+    display: none !important;
+  }
+
+  /* Mobile Navigation */
+  .aa-nav {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: rgba(8, 10, 12, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-direction: column;
+    gap: 0;
+    padding: 20px 0;
+    margin-left: 0;
+    transform: translateY(-150%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .aa-nav.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .aa-nav-link {
+    padding: 16px 24px;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%;
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+
+  .aa-nav-link:focus {
+    outline: none;
+  }
+
+  .aa-nav-link:active {
+    outline: none;
+  }
+
+  .aa-nav-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .aa-nav-link-active {
+    border-bottom: 1px solid rgba(110, 198, 255, 0.3);
+    border-radius: 0;
+    background: rgba(110, 198, 255, 0.05);
+  }
+
+  /* Show actions inside mobile nav */
+  .aa-nav-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 8px;
+  }
+
+  .aa-nav-actions .aa-btn,
+  .aa-nav-actions .aa-btn-secondary {
+    width: 100%;
+    text-align: center;
+    padding: 12px 16px;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+
+  .aa-nav-actions .aa-btn:focus,
+  .aa-nav-actions .aa-btn-secondary:focus {
+    outline: none;
+  }
+
+  .aa-nav-actions .aa-btn:active,
+  .aa-nav-actions .aa-btn-secondary:active {
+    outline: none;
+  }
+
+  .body-with-header {
+    padding-top: 72px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .aa-header-inner {
+    padding: 0 12px;
+  }
+
+  .aa-title-sub {
+    display: none;
+  }
+
+  .aa-title-main {
+    font-size: 15px;
+  }
+
+  .aa-logo {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Medium devices - tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .aa-nav {
+    gap: 8px;
+    margin-left: 12px;
+  }
+
+  .aa-nav-link {
+    padding: 8px 8px;
+    font-size: 14px;
+  }
+
+  .aa-actions {
+    gap: 8px;
+  }
+
+  .aa-btn,
+  .aa-btn-secondary {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
