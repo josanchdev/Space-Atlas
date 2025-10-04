@@ -28,7 +28,7 @@ export default function Header() {
 
         <div className="aa-actions">
           <Link to="/signin" className="aa-btn-secondary">Sign In</Link>
-          <Link to="/scientists" className="aa-btn">Access for scientists</Link>
+          <Link to="/scientist-auth" className="aa-btn">Access for scientists</Link>
         </div>
       </div>
     </header>

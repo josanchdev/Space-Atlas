@@ -12,6 +12,7 @@ import ScientistsPage from './pages/ScientistsPage'
 import SpaceMissionsPage from './pages/SpaceMissionsPage'
 import SpaceMissionDetailPage from './pages/SpaceMissionDetailPage'
 import SignInPage from './pages/SignInPage'
+import ScientistAuthPage from './pages/ScientistAuthPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 function AppContent() {
@@ -37,6 +38,7 @@ function AppContent() {
           <Route path="/space-missions" element={<SpaceMissionsPage />} />
           <Route path="/space-mission/:mission_name" element={<SpaceMissionDetailPage />} />
           <Route path="/signin" element={<SignInPage />} />
+          <Route path="/scientist-auth" element={<ScientistAuthPage />} />
           <Route path="/scientists" element={<ScientistsPage />} />
           <Route path="/:name" element={<PlanetPage />} />
           <Route path="*" element={<NotFoundPage />} />

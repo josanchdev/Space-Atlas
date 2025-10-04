@@ -1,0 +1,544 @@
+/* ============================================
+   SCIENTIST AUTH PAGE - WRAPPER
+   ============================================ */
+
+.scientist-auth-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow-y: auto;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  padding: 0.75rem 1rem;
+  box-sizing: border-box;
+  margin-top: -84px;
+  padding-top: calc(0.75rem + 84px);
+  padding-bottom: 0.75rem;
+}
+
+/* ============================================
+   ANIMATED BACKGROUND
+   ============================================ */
+
+.scientist-auth-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.scientist-auth-background .stars,
+.scientist-auth-background .stars2,
+.scientist-auth-background .stars3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.scientist-auth-background .stars {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, white, transparent),
+    radial-gradient(2px 2px at 60px 70px, white, transparent),
+    radial-gradient(1px 1px at 50px 50px, white, transparent),
+    radial-gradient(1px 1px at 130px 80px, white, transparent),
+    radial-gradient(2px 2px at 90px 10px, white, transparent);
+  background-size: 200px 200px;
+  animation: twinkle 5s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+.scientist-auth-background .stars2 {
+  background-image: 
+    radial-gradient(1px 1px at 100px 120px, white, transparent),
+    radial-gradient(1px 1px at 160px 50px, white, transparent),
+    radial-gradient(2px 2px at 40px 90px, white, transparent);
+  background-size: 250px 250px;
+  animation: twinkle 7s ease-in-out infinite;
+  opacity: 0.4;
+}
+
+.scientist-auth-background .stars3 {
+  background-image: 
+    radial-gradient(1px 1px at 70px 160px, rgba(144, 202, 249, 0.8), transparent),
+    radial-gradient(2px 2px at 180px 100px, rgba(255, 213, 79, 0.6), transparent);
+  background-size: 300px 300px;
+  animation: twinkle 10s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+/* ============================================
+   CONTAINER
+   ============================================ */
+
+.scientist-auth-container {
+  display: flex;
+  max-width: 650px;
+  width: 100%;
+  max-height: none;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  margin: auto;
+}
+
+.scientist-auth-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scientist-auth-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.scientist-auth-container::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 10px;
+}
+
+.scientist-auth-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+/* ============================================
+   AUTH CARD
+   ============================================ */
+
+.scientist-auth-card {
+  background: rgba(15, 15, 25, 0.95);
+  border: 1px solid rgba(100, 200, 255, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(100, 200, 255, 0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.scientist-auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
+  background-size: 200% 100%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.scientist-auth-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.scientist-auth-logo {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+  box-shadow: 
+    0 0 30px rgba(59, 130, 246, 0.4),
+    0 0 60px rgba(139, 92, 246, 0.2);
+}
+
+.scientist-auth-logo .logo-icon {
+  color: white;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  width: 24px;
+  height: 24px;
+}
+
+.scientist-auth-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.25rem;
+  background: linear-gradient(135deg, #fff 0%, #90caf9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.scientist-auth-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* ============================================
+   VERIFICATION INFO
+   ============================================ */
+
+.verification-info {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  padding: 0.625rem;
+  margin-bottom: 0.875rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  color: #90caf9;
+  font-size: 0.75rem;
+}
+
+.verification-info svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  width: 14px;
+  height: 14px;
+}
+
+.verification-info strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.verification-info ul {
+  margin: 0;
+  padding-left: 1rem;
+  list-style-type: disc;
+}
+
+.verification-info li {
+  margin: 0.15rem 0;
+  line-height: 1.2;
+}
+
+/* ============================================
+   FORM
+   ============================================ */
+
+.scientist-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Layout de 2 columnas para ciertos campos */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.form-row .form-group {
+  min-height: 0;
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-label svg {
+  width: 16px;
+  height: 16px;
+}
+
+.required-badge {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  font-size: 0.6rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.form-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.9rem;
+  color: #fff;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-input.input-error {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.form-input.input-success {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper .form-input {
+  flex: 1;
+  padding-right: 2.5rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   VALIDATION MESSAGES
+   ============================================ */
+
+.validation-message {
+  font-size: 0.68rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: -0.1rem;
+  line-height: 1.1;
+}
+
+.validation-message.error {
+  color: #fca5a5;
+  padding: 0;
+  margin-bottom: 3px;
+}
+
+.validation-message.success {
+  color: #6ee7b7;
+}
+
+.helper-text {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: -0.1rem;
+  line-height: 1.1;
+}
+
+.helper-text a {
+  color: #60a5fa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.helper-text a:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+/* ============================================
+   SUBMIT BUTTON
+   ============================================ */
+
+.submit-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.375rem;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+.submit-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(59, 130, 246, 0.4);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   AUTH TOGGLE
+   ============================================ */
+
+.auth-toggle {
+  margin-top: 1rem;
+  text-align: center;
+  padding-top: 0.875rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-toggle p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #60a5fa;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: color 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.toggle-btn:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+/* ============================================
+   BACK LINK
+   ============================================ */
+
+.back-link {
+  margin-top: 0.625rem;
+  text-align: center;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.link-btn:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .scientist-auth-wrapper {
+    padding: 0.75rem;
+    padding-top: calc(0.75rem + 84px);
+  }
+
+  .scientist-auth-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .scientist-auth-title {
+    font-size: 1.2rem;
+  }
+
+  .scientist-auth-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .verification-info {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .scientist-auth-card {
+    padding: 1.25rem 1rem;
+    border-radius: 14px;
+  }
+
+  .scientist-auth-logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .scientist-auth-logo .logo-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .scientist-auth-title {
+    font-size: 1.1rem;
+  }
+
+  .form-input {
+    padding: 0.625rem;
+    font-size: 0.9rem;
+  }
+
+  .submit-btn {
+    padding: 0.75rem;
+  }
+}
