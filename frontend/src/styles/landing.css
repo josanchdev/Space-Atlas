@@ -794,6 +794,7 @@
   font-weight: 600;
   color: #90CAF9;
   margin: 0 0 1.5rem 0;
+  text-align: center;
 }
 
 .footer-links {
@@ -821,6 +822,7 @@
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+  justify-content: center;
 }
 
 .social-link {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Mail, Lock, User, Eye, EyeOff, Shield, GraduationCap, Building } from 'lucide-react'
 import '../styles/scientistAuth.css'
 
@@ -332,6 +332,18 @@ export default function ScientistAuthPage() {
                 </div>
               )}
             </div>
+
+            {isLogin && (
+              <div className="form-options">
+                <label className="remember-me">
+                  <input type="checkbox" />
+                  <span>Remember me</span>
+                </label>
+                <Link to="/forgot-password" className="forgot-password">
+                  Forgot password?
+                </Link>
+              </div>
+            )}
 
             <button type="submit" className="submit-btn">
               <GraduationCap size={18} />

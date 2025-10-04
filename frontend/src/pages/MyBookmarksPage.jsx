@@ -76,7 +76,7 @@ export default function MyBookmarksPage() {
         <div className="mybookmarks-header">
           <button 
             className="back-button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate(-1)}
           >
             <ArrowLeft size={20} />
             Back

@@ -1,4 +1,4 @@
-import { Github, Twitter, Mail, Users } from 'lucide-react'
+import { Github, Mail, Instagram } from 'lucide-react'
 import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.webp'
 import '../styles/landing.css'
 
@@ -44,17 +44,19 @@ export default function Footer() {
         <div className="footer-section">
           <h4 className="footer-heading">Connect</h4>
           <div className="footer-social">
-            <a href="#" className="social-link" aria-label="GitHub">
+            <a href="https://github.com/josanchdev/Space-Atlas" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
               <Github size={24} />
             </a>
-            <a href="#" className="social-link" aria-label="Twitter">
-              <Twitter size={24} />
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="X (Twitter)">
+              <svg width="24" height="22" viewBox="0 0 300 271" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="m236 0h46l-101 115 118 156h-92.6l-72.5-94.8-83 94.8h-46l107-123-113-148h94.9l65.5 86.6zm-16.1 244h25.5l-165-218h-27.4z"/>
+              </svg>
             </a>
-            <a href="#" className="social-link" aria-label="Email">
+            <a href="mailto:contact@spaceatlas.earth" className="social-link" aria-label="Email">
               <Mail size={24} />
             </a>
-            <a href="#" className="social-link" aria-label="Community">
-              <Users size={24} />
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram">
+              <Instagram size={24} />
             </a>
           </div>
         </div>
