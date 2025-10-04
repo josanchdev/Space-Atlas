@@ -1,11 +1,16 @@
+import { useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.webp'
 import '../styles/header.css'
 
 export default function Header() {
   const location = useLocation()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleNavClick = (path) => {
+    // Cerrar el menú móvil
+    setIsMenuOpen(false)
+    
     // Si ya estamos en la página actual, hacer scroll suave al top
     if (location.pathname === path) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -13,6 +18,10 @@ export default function Header() {
       // Si navegamos a otra página, asegurar que empiece desde arriba
       window.scrollTo({ top: 0, behavior: 'auto' })
     }
+  }
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
   }
 
   return (
@@ -37,7 +46,18 @@ export default function Header() {
           </div>
         </Link>
 
-        <nav className="aa-nav">
+        {/* Hamburger Menu Button */}
+        <button 
+          className={`aa-hamburger ${isMenuOpen ? 'active' : ''}`}
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav className={`aa-nav ${isMenuOpen ? 'active' : ''}`}>
           <NavLink 
             to="/news" 
             onClick={() => handleNavClick('/news')}
@@ -56,6 +76,7 @@ export default function Header() {
           </NavLink>
           <NavLink 
             to="/solar-system" 
+            onClick={() => handleNavClick('/solar-system')}
             className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"} 
             id="title-font"
           >
@@ -69,9 +90,27 @@ export default function Header() {
           >
             Space Missions
           </NavLink>
+          
+          {/* Actions dentro del menú móvil */}
+          <div className="aa-nav-actions">
+            <Link 
+              to="/signin" 
+              onClick={() => handleNavClick('/signin')}
+              className="aa-btn-secondary"
+            >
+              Sign In
+            </Link>
+            <Link 
+              to="/scientist-auth" 
+              onClick={() => handleNavClick('/scientist-auth')}
+              className="aa-btn"
+            >
+              Access for scientists
+            </Link>
+          </div>
         </nav>
 
-        <div className="aa-actions">
+        <div className="aa-actions aa-actions-desktop">
           <Link 
             to="/signin" 
             onClick={() => handleNavClick('/signin')}
