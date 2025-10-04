@@ -1,12 +1,16 @@
 .landing-container {
   min-height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
   padding: 2rem;
-  position: relative;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
   overflow: hidden;
 }
 

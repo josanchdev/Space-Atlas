@@ -15,7 +15,7 @@ export default function Header() {
             </svg>
           </div>
           <div className="aa-title">
-            <div className="aa-title-main">Apollo Atlas</div>
+            <div className="aa-title-main">Space Atlas</div>
             <div className="aa-title-sub">Explore. Upload. Discover.</div>
           </div>
         </Link>
