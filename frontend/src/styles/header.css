@@ -48,8 +48,24 @@
 .aa-title-sub{ font-size: 12px; color: rgba(255,255,255,0.65); margin-top:2px }
 
 .aa-nav{ margin-left: 18px; display:flex; gap:12px }
-.aa-nav-link{ color: rgba(255,255,255,0.85); text-decoration:none; padding:8px 10px; border-radius:8px; font-weight:600 }
+.aa-nav-link{ 
+  color: rgba(255,255,255,0.85); 
+  text-decoration:none; 
+  padding:8px 10px; 
+  border-radius:8px; 
+  font-weight:600;
+  position: relative;
+  transition: all 0.3s ease;
+}
 .aa-nav-link:hover{ background: rgba(255,255,255,0.02) }
+.aa-nav-link-active {
+  color: #6EC6FF !important;
+  border-bottom: 2px solid #6EC6FF;
+  border-radius: 8px 8px 0 0;
+}
+.aa-nav-link-active:hover {
+  background: rgba(110, 198, 255, 0.05);
+}
 
 .aa-actions{ margin-left:auto; display:flex; gap:12px; align-items:center }
 .aa-btn{ background: linear-gradient(90deg,#6EC6FF,#8E7BFF); color:#061018; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:700; transition: all 0.3s ease; }

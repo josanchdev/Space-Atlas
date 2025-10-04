@@ -1,0 +1,224 @@
+.explore-page {
+  min-height: 100vh;
+  padding: 80px 28px 60px;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1428 100%);
+}
+
+.explore-header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.explore-header h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4a9eff 0%, #1e6bff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.explore-header p {
+  color: #cbd5e0;
+  font-size: 1.125rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 0 auto 48px;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+  position: relative;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  color: #a0aec0;
+  pointer-events: none;
+  font-size: 1.25rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  border-radius: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f7fafc;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.search-input::placeholder {
+  color: #718096;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4a9eff;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(74, 158, 255, 0.15), 0 8px 24px rgba(74, 158, 255, 0.25);
+}
+
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.explore-card {
+  background: linear-gradient(145deg, #1a2340 0%, #16213e 100%);
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(74, 158, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.explore-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(74, 158, 255, 0.1) 0%, rgba(30, 107, 255, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+.explore-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(74, 158, 255, 0.3), 0 0 20px rgba(30, 107, 255, 0.2);
+  border-color: rgba(74, 158, 255, 0.4);
+}
+
+.explore-card:hover::before {
+  opacity: 1;
+}
+
+.explore-card-thumbnail {
+  height: 200px;
+  background: linear-gradient(135deg, #2a2a4e 0%, #3a3a6e 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.explore-card-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.explore-card:hover .explore-card-thumbnail img {
+  transform: scale(1.1);
+}
+
+.explore-card-thumbnail .placeholder {
+  color: #4a5568;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.explore-card-content {
+  margin-top: 16px;
+  padding: 0 4px;
+}
+
+.explore-card-title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: #f7fafc;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.explore-card-body {
+  font-size: 0.875rem;
+  color: #cbd5e0;
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(74, 158, 255, 0.15);
+  border-radius: 12px;
+  border: 1px solid rgba(74, 158, 255, 0.3);
+}
+
+.no-results {
+  text-align: center;
+  color: #a0aec0;
+  font-size: 1.125rem;
+  padding: 60px 20px;
+  grid-column: 1 / -1;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .explore-header h2 {
+    font-size: 2rem;
+  }
+  
+  .explore-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+}

@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react'
-import '../styles/header.css'
+import '../styles/explorePage.css'
 
 function ImageCard({ img }) {
   return (
-    <div style={{ width: 260, margin: 8, background: '#0b0b0f', padding: 8, borderRadius: 8, color: '#fff' }}>
-      <div style={{ height: 180, background: '#111', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {img.thumbnail ? <img src={img.thumbnail} alt={img.title} style={{ maxWidth: '100%', maxHeight: '100%', borderRadius: 6 }} /> : <div style={{ color: '#777' }}>DZI preview</div>}
+    <div className="explore-card">
+      <div className="explore-card-thumbnail">
+        {img.thumbnail ? (
+          <img src={img.thumbnail} alt={img.title} />
+        ) : (
+          <div className="placeholder">DZI Preview</div>
+        )}
       </div>
-      <div style={{ marginTop: 8 }}>
-        <div style={{ fontWeight: 600 }}>{img.title || img.filename}</div>
-        <div style={{ fontSize: 12, color: '#9aa' }}>{img.body || 'Unknown body'}</div>
+      <div className="explore-card-content">
+        <div className="explore-card-title">{img.title || img.filename}</div>
+        <div className="explore-card-body">{img.body || 'Unknown body'}</div>
       </div>
     </div>
   )
@@ -32,6 +36,10 @@ export default function ExplorePage() {
         setImages([
           { filename: 'earth_001.dzi', title: 'Blue Marble', body: 'Earth', thumbnail: '/public/placeholder-earth.jpg' },
           { filename: 'jupiter_001.dzi', title: 'Great Red Spot', body: 'Jupiter', thumbnail: '/public/placeholder-jupiter.jpg' },
+          { filename: 'mars_001.dzi', title: 'Olympus Mons', body: 'Mars', thumbnail: '/public/placeholder-mars.jpg' },
+          { filename: 'venus_001.dzi', title: 'Venus Surface', body: 'Venus', thumbnail: '/public/placeholder-venus.jpg' },
+          { filename: 'saturn_001.dzi', title: 'Saturn Rings', body: 'Saturn', thumbnail: '/public/placeholder-saturn.jpg' },
+          { filename: 'neptune_001.dzi', title: 'Neptune Storm', body: 'Neptune', thumbnail: '/public/placeholder-neptune.jpg' },
         ])
       })
 
@@ -46,22 +54,31 @@ export default function ExplorePage() {
   })
 
   return (
-    <div style={{ padding: 28 }}>
-      <h2 style={{ color: '#fff' }}>Explore images</h2>
-      <p style={{ color: '#9aa' }}>Search images uploaded by the scientific community.</p>
-
-      <div style={{ marginTop: 12, marginBottom: 12 }}>
-        <input
-          aria-label="Search by body"
-          placeholder="Search by celestial body or title..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{ padding: '8px 12px', width: 360, borderRadius: 8, border: '1px solid #223', background: '#071019', color: '#fff' }}
-        />
+    <div className="explore-page">
+      <div className="explore-header">
+        <h2>Explore the Cosmos</h2>
+        <p>Search and discover high-resolution images from across the solar system and beyond.</p>
       </div>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 12 }}>
-        {filtered.length === 0 ? <div style={{ color: '#9aa' }}>No images match your query.</div> : filtered.map((img, i) => <ImageCard key={i} img={img} />)}
+      <div className="search-container">
+        <div className="search-input-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            className="search-input"
+            aria-label="Search by body"
+            placeholder="Search by celestial body or title..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="explore-grid">
+        {filtered.length === 0 ? (
+          <div className="no-results">No images match your search. Try a different query.</div>
+        ) : (
+          filtered.map((img, i) => <ImageCard key={i} img={img} />)
+        )}
       </div>
     </div>
   )

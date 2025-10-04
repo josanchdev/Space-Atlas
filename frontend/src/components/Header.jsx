@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.webp'
 import '../styles/header.css'
 
@@ -20,10 +20,10 @@ export default function Header() {
         </Link>
 
         <nav className="aa-nav">
-          <Link to="/news" className="aa-nav-link">News</Link>
-          <Link to="/explore" className="aa-nav-link">Explore</Link>
-          <Link to="/solar-system" className="aa-nav-link">Solar System</Link>
-          <Link to="/space-missions" className="aa-nav-link">Space Missions</Link>
+          <NavLink to="/news" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"}>News</NavLink>
+          <NavLink to="/explore" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"}>Explore</NavLink>
+          <NavLink to="/solar-system" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"}>Solar System</NavLink>
+          <NavLink to="/space-missions" className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"}>Space Missions</NavLink>
         </nav>
 
         <div className="aa-actions">
