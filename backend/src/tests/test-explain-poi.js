@@ -10,10 +10,7 @@ async function test() {
     lat: 39.8,
     lon: -139.4,
     title: "Erebus Montes",
-    desc: "Formación volcánica en Marte",
-    minZoom: 0.0,
-    imagePath: "Mars_Express_spies_an_ancient_triple_crater_on_Mars_pillars.jpg", // Ruta en Azure
-    
+    description: "Formación volcánica en Marte",  
     path: "14/12_5"
   };
 

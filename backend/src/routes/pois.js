@@ -1,5 +1,5 @@
 const express = require("express")
-const { getItems, getItem, createItem } = require("../controllers/pois")
+const { getItems, createItem } = require("../controllers/pois")
 const router = express.Router()
 
 

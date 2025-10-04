@@ -1,28 +1,21 @@
-const { AzureOpenAI } = require('openai');
+const OpenaiClient = require("../config/azure-openai-connection")
 require('dotenv').config();
 
-const client = new AzureOpenAI({
-  endpoint: process.env.AZURE_OPENAI_ENDPOINT,
-  apiKey: process.env.AZURE_OPENAI_KEY,
-  apiVersion: process.env.AZURE_OPENAI_API_VERSION,
-  deployment: process.env.AZURE_OPENAI_DEPLOYMENT
-});
-
 async function explainPOI(poiTitle, imageUrl, description = '') {
+  const PROMPT = `You are an expert in planetary science and Mars exploration.
+
+                Explain this Martian feature: "${poiTitle}" + ( ${description} )
+
+                Provide an educational explanation (maximum 4 paragraphs) about:
+                1. What exactly is "${poiTitle}" and what we see in the image
+                2. How this geological feature was formed
+                3. Why it is scientifically interesting
+                4. A fascinating fact
+
+                Respond clearly and accessibly in English.`;
+
   try {
-    const prompt = `You are an expert in planetary science and Mars exploration.
-
-Explain this Martian feature: "${poiTitle}" + ( ${description} )
-
-Provide an educational explanation (maximum 4 paragraphs) about:
-1. What exactly is "${poiTitle}" and what we see in the image
-2. How this geological feature was formed
-3. Why it is scientifically interesting
-4. A fascinating fact
-
-Respond clearly and accessibly in English.`;
-
-    const response = await client.chat.completions.create({
+    const response = await OpenaiClient.chat.completions.create({
       model: process.env.AZURE_OPENAI_DEPLOYMENT,
       messages: [
         {
@@ -32,7 +25,7 @@ Respond clearly and accessibly in English.`;
         {
           role: "user",
           content: [
-            { type: "text", text: prompt },
+            { type: "text", text: PROMPT },
             { 
               type: "image_url", 
               image_url: { 
@@ -47,11 +40,11 @@ Respond clearly and accessibly in English.`;
       temperature: 0.7
     });
 
-    console.log(`✅ AI explanation generated for: ${poiTitle}`);
+    console.log(`AI explanation generated for: ${poiTitle}`);
     return response.choices[0].message.content;
 
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('Error generando una explicacion de un POI:', error.message);
     throw error;
   }
 }
@@ -64,7 +57,7 @@ Respond clearly and accessibly in English.`;
  * @param {string} poiContext - Contexto del POI (título y descripción)
  * @returns {string} - Respuesta del asistente
  */
-async function chatWithPOI(conversationHistory, userMessage, imageUrl = null, poiContext = '') {
+async function _chatWithPOI(conversationHistory, userMessage, imageUrl = null, poiContext = '') {
   try {
     const messages = [
       {
@@ -105,7 +98,7 @@ async function chatWithPOI(conversationHistory, userMessage, imageUrl = null, po
       });
     }
 
-    const response = await client.chat.completions.create({
+    const response = await OpenaiClient.chat.completions.create({
       model: process.env.AZURE_OPENAI_DEPLOYMENT,
       messages: messages,
       max_tokens: 500,
@@ -121,4 +114,4 @@ async function chatWithPOI(conversationHistory, userMessage, imageUrl = null, po
   }
 }
 
-module.exports = { explainPOI, chatWithPOI };
+module.exports = { explainPOI };
