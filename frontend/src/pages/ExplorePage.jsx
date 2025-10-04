@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Search } from 'lucide-react'
 import '../styles/explorePage.css'
 
 function ImageCard({ img }) {
@@ -62,7 +63,9 @@ export default function ExplorePage() {
 
       <div className="search-container">
         <div className="search-input-wrapper">
-          <span className="search-icon">🔍</span>
+          <span className="search-icon">
+            <Search size={20} />
+          </span>
           <input
             className="search-input"
             aria-label="Search by body"

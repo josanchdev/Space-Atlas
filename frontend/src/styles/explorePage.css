@@ -51,6 +51,15 @@
   color: #a0aec0;
   pointer-events: none;
   font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.search-icon svg {
+  stroke: currentColor;
+  stroke-width: 2;
 }
 
 .search-input {
