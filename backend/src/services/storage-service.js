@@ -1,4 +1,4 @@
-const blobServiceClient = require('../config/connection');
+const blobServiceClient = require('../config/azure-connection');
 const fs = require('fs');
 const path = require('path');
 
