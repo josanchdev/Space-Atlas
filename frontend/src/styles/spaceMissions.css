@@ -1,12 +1,13 @@
 .missions-container {
   min-height: 100vh;
+  height: 100vh;
   background: #0a0a0a;
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 0;
   position: relative;
   overflow: hidden;
 }
@@ -25,218 +26,429 @@
     radial-gradient(1px 1px at 130px 80px, white, transparent);
   background-size: 200px 200px;
   opacity: 0.3;
+  z-index: 0;
 }
 
-.missions-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  z-index: 1;
-}
-
-.missions-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #fff;
-  background: rgba(50, 50, 60, 0.6);
-  padding: 1rem 3rem;
-  border-radius: 50px;
-  display: inline-block;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.mission-carousel {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  max-width: 1400px;
-  width: 100%;
-  z-index: 1;
-  margin-bottom: 2rem;
-}
-
-.carousel-button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-
-.carousel-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: scale(1.1);
-}
-
-.mission-display {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.mission-planet {
-  width: 100%;
-  max-width: 600px;
-  aspect-ratio: 16 / 9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Carousel Container */
+.carousel-container {
   position: relative;
-}
-
-.mission-planet img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.placeholder-planet {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle, rgba(100, 100, 120, 0.2) 0%, transparent 70%);
+  z-index: 1;
 }
 
-.planet-circle {
-  width: 300px;
-  height: 300px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 60px rgba(102, 126, 234, 0.4);
-  animation: float 6s ease-in-out infinite;
+/* Carousel Track Container */
+.carousel-track-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+/* Carousel Track */
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
+/* Individual Slide */
+.carousel-slide {
+  min-width: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* Mission Card */
+.mission-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  width: 900px;
+  height: 380px;
+  background: rgba(10, 10, 20, 0.5);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(144, 202, 249, 0.2);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mission Info - Left Side */
 .mission-info {
-  text-align: center;
-  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  padding-right: 1rem;
 }
 
 .mission-name {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  letter-spacing: 3px;
+  margin: 0;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 4px 16px rgba(0, 212, 255, 0.4);
+  line-height: 1.2;
 }
 
 .mission-year {
-  font-size: 1.2rem;
-  color: #90CAF9;
-  margin: 0 0 1rem 0;
-  font-weight: 300;
+  font-size: 1rem;
+  color: #00d4ff;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 1.5px;
 }
 
 .mission-description {
-  font-size: 1.2rem;
+  font-size: 0.95rem;
   color: #B0BEC5;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
+  font-weight: 300;
 }
 
 .select-mission-button {
   background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 100%);
   color: #fff;
   border: none;
-  padding: 1rem 3rem;
-  font-size: 1.2rem;
+  padding: 0.85rem 2rem;
+  font-size: 0.95rem;
   font-weight: 600;
   border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 1;
-  margin-bottom: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: capitalize;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  display: inline-block;
+  align-self: flex-start;
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.select-mission-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.select-mission-button:hover::before {
+  left: 100%;
 }
 
 .select-mission-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.6);
 }
 
-.mission-indicators {
+.select-mission-button:active {
+  transform: translateY(-1px);
+}
+
+/* Mission Image Container - Right Side */
+.mission-image-container {
   display: flex;
-  gap: 1rem;
-  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
 }
 
-.indicator {
+.mission-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 40%, transparent 100%);
+}
+
+.mission-image:hover {
+  transform: scale(1.05);
+}
+
+.image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  color: rgba(144, 202, 249, 0.4);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.image-placeholder svg {
+  opacity: 0.3;
+  width: 60px;
+  height: 60px;
+}
+
+.image-placeholder p {
+  margin: 0;
+  font-weight: 300;
+}
+
+/* Carousel Arrows */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 212, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(0, 212, 255, 0.4);
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #00d4ff;
+  z-index: 10;
+}
+
+.carousel-arrow:hover {
+  background: rgba(0, 212, 255, 0.3);
+  border-color: rgba(0, 212, 255, 0.8);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
+}
+
+.carousel-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-arrow-left {
+  left: 3rem;
+}
+
+.carousel-arrow-right {
+  right: 3rem;
+}
+
+/* Carousel Dots */
+.carousel-dots {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.8rem;
+  z-index: 10;
+}
+
+.carousel-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(144, 202, 249, 0.3);
+  border: 2px solid rgba(144, 202, 249, 0.5);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
 }
 
-.indicator.active {
+.carousel-dot:hover {
+  background: rgba(0, 212, 255, 0.5);
+  border-color: rgba(0, 212, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
   background: #00d4ff;
-  transform: scale(1.3);
+  border-color: #00d4ff;
+  width: 32px;
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
 }
 
-.loading,
-.no-missions {
+.loading {
   font-size: 1.5rem;
   color: #90CAF9;
   text-align: center;
   z-index: 1;
 }
 
-@media (max-width: 768px) {
-  .missions-title {
-    font-size: 1.8rem;
-    padding: 0.8rem 2rem;
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .carousel-slide {
+    padding: 3rem;
   }
 
-  .mission-carousel {
-    flex-direction: column;
-    gap: 1rem;
+  .mission-card {
+    gap: 3rem;
+    padding: 3rem;
   }
 
-  .carousel-button {
+  .mission-name {
+    font-size: 3rem;
+  }
+
+  .mission-description {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 968px) {
+  .carousel-slide {
+    padding: 2rem;
+  }
+
+  .mission-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 2rem;
+    padding: 2.5rem;
+    height: 90%;
+  }
+
+  .mission-info {
+    padding-right: 0;
+    gap: 1.5rem;
+  }
+
+  .mission-name {
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+  }
+
+  .mission-year {
+    font-size: 1.1rem;
+  }
+
+  .mission-description {
+    font-size: 1rem;
+  }
+
+  .select-mission-button {
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+  }
+
+  .carousel-arrow {
     width: 50px;
     height: 50px;
   }
 
-  .carousel-button.prev,
-  .carousel-button.next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-  }
-
-  .carousel-button.prev {
+  .carousel-arrow-left {
     left: 1rem;
   }
 
-  .carousel-button.next {
+  .carousel-arrow-right {
     right: 1rem;
+  }
+
+  .carousel-dots {
+    bottom: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .carousel-slide {
+    padding: 1rem;
+  }
+
+  .mission-card {
+    padding: 2rem;
+    gap: 1.5rem;
   }
 
   .mission-name {
     font-size: 2rem;
+    letter-spacing: 2px;
   }
 
-  .planet-circle {
-    width: 200px;
-    height: 200px;
+  .mission-year {
+    font-size: 1rem;
+  }
+
+  .mission-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .select-mission-button {
+    padding: 0.9rem 2rem;
+    font-size: 0.95rem;
+    align-self: stretch;
+  }
+
+  .carousel-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .carousel-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .carousel-arrow-left {
+    left: 0.5rem;
+  }
+
+  .carousel-arrow-right {
+    right: 0.5rem;
+  }
+
+  .carousel-dots {
+    bottom: 1.5rem;
+    gap: 0.7rem;
+  }
+
+  .carousel-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .carousel-dot.active {
+    width: 24px;
+  }
+
+  .mission-image-container {
+    min-height: 250px;
+  }
+
+  .image-placeholder {
+    font-size: 0.9rem;
+  }
+
+  .image-placeholder svg {
+    width: 60px;
+    height: 60px;
   }
 }
