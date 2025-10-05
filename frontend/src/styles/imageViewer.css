@@ -10,35 +10,58 @@
   z-index: 9999;
 }
 
+/* Back button - same style as PlanetPage */
+.viewer-back-button {
+  position: absolute;
+  z-index: 10000;
+  left: 24px;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(6, 8, 12, 0.7);
+  border: 1px solid rgba(144, 202, 249, 0.3);
+  border-radius: 12px;
+  color: #90CAF9;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Hover para desktop */
+@media (hover: hover) and (pointer: fine) {
+  .viewer-back-button:hover {
+    background: rgba(144, 202, 249, 0.15);
+    border-color: transparent;
+    transform: translateX(-3px);
+  }
+}
+
+/* Active para móvil */
+@media (hover: none) and (pointer: coarse) {
+  .viewer-back-button:active {
+    background: rgba(144, 202, 249, 0.15);
+    border-color: #90CAF9;
+  }
+}
+
 .image-viewer-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
+  padding-left: 160px; /* Space for back button */
   background: rgba(0, 0, 0, 0.95);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   gap: 20px;
   flex-wrap: wrap;
-}
-
-.back-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.back-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  min-height: 72px; /* Ensure consistent height */
+  position: relative;
+  z-index: 100;
 }
 
 .image-title {
@@ -47,6 +70,7 @@
   align-items: center;
   gap: 12px;
   min-width: 0;
+  padding-top: 8px; /* Move title down slightly to align with button */
 }
 
 .image-title h1 {
@@ -71,32 +95,63 @@
 
 .image-actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  position: relative;
+  z-index: 101;
 }
 
-.action-button {
+/* Mini Action Containers - Built from scratch */
+.mini-action-container {
+  /* Layout */
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  color: #fff;
+  width: 44px;
+  height: 44px;
+  
+  /* Visual Style */
+  background: rgba(10, 15, 25, 0.85);
+  border: 2px solid rgba(144, 202, 249, 0.4);
+  border-radius: 10px;
+  
+  /* Effects */
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  
+  /* Interaction */
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Icon color */
+  color: white;
 }
 
-.action-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+.mini-action-container svg {
+  color: white;
+  stroke: white;
+  transition: all 0.3s ease;
 }
 
-.action-button.active {
-  background: rgba(154, 209, 255, 0.15);
-  border-color: rgba(154, 209, 255, 0.3);
-  color: #9ad1ff;
+.mini-action-container:hover {
+  background: rgba(144, 202, 249, 0.25);
+  border-color: rgba(144, 202, 249, 0.7);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(144, 202, 249, 0.4);
+}
+
+.mini-action-container:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.mini-action-container.active {
+  background: rgba(144, 202, 249, 0.3);
+  border-color: rgba(144, 202, 249, 0.8);
+  box-shadow: 0 0 20px rgba(144, 202, 249, 0.5);
+}
+
+.mini-action-container.active svg {
+  color: #90CAF9;
+  stroke: #90CAF9;
 }
 
 .image-viewer-container {
@@ -211,16 +266,24 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .viewer-back-button {
+    left: 12px;
+    top: 12px;
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .viewer-back-button span {
+    display: none;
+  }
+
   .image-viewer-topbar {
     padding: 12px 16px;
+    padding-left: 60px; /* Adjusted for smaller back button */
   }
 
   .image-title h1 {
     font-size: 16px;
-  }
-
-  .back-button span {
-    display: none;
   }
 
   .action-button {

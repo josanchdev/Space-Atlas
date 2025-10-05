@@ -150,42 +150,56 @@ export default function ImageViewerPage() {
 
   return (
     <div className="image-viewer-page">
-      {/* Top bar with controls */}
-      <div className="image-viewer-topbar">
-        <button onClick={handleBack} className="back-button">
-          <ArrowLeft size={20} />
-          <span>Back</span>
-        </button>
+      {/* Back button - positioned absolutely like PlanetPage */}
+      <button onClick={handleBack} className="viewer-back-button">
+        <ArrowLeft size={20} />
+        <span>Back</span>
+      </button>
 
+      {/* Top bar with title and actions */}
+      <div className="image-viewer-topbar">
         <div className="image-title">
           <h1>{imageData?.title || title || image_name}</h1>
           {planet && <span className="planet-badge">{planet.toUpperCase()}</span>}
         </div>
 
         <div className="image-actions">
-          <button
+          {/* Bookmark Button */}
+          <div 
+            className={`mini-action-container ${isBookmarked ? 'active' : ''}`}
             onClick={handleBookmark}
-            className={`action-button ${isBookmarked ? 'active' : ''}`}
             title={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
           >
-            <Bookmark size={20} fill={isBookmarked ? 'currentColor' : 'none'} />
-          </button>
+            <Bookmark 
+              size={18} 
+              strokeWidth={2}
+              fill={isBookmarked ? 'white' : 'none'}
+            />
+          </div>
 
-          <button
+          {/* Comments Button */}
+          <div 
+            className="mini-action-container"
             onClick={() => setShowComments(!showComments)}
-            className="action-button"
             title="Comments"
           >
-            <MessageSquare size={20} />
-          </button>
+            <MessageSquare 
+              size={18}
+              strokeWidth={2}
+            />
+          </div>
 
-          <button
+          {/* Share Button */}
+          <div 
+            className="mini-action-container"
             onClick={handleShare}
-            className="action-button"
             title="Share"
           >
-            <Share2 size={20} />
-          </button>
+            <Share2 
+              size={18}
+              strokeWidth={2}
+            />
+          </div>
         </div>
       </div>
 

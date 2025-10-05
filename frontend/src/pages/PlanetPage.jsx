@@ -1,12 +1,15 @@
 import { useParams } from 'react-router-dom'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Menu, X, Eye } from 'lucide-react'
 import ModelLoader from '../components/ModelLoader'
+import POIMarker from '../components/POIMarker'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import * as THREE from 'three'
 import NotFoundPage from './NotFoundPage'
+import { poisService } from '../services/poisService'
+import { latLonToCartesian } from '../utils/coordinateConverter'
 import '../styles/planetPage.css'
 
 // Information for each celestial body
@@ -150,8 +153,100 @@ function PlanetDetailView({ name, onClose }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const navigate = useNavigate()
   
+  // POIs state
+  const [pois, setPois] = useState([])
+  const [loadingPois, setLoadingPois] = useState(true)
+  const [poisError, setPoisError] = useState(null)
+  
   // Obtener información del cuerpo celeste
   const info = celestialBodiesInfo[name.toLowerCase()] || {}
+  
+  // Fetch POIs from backend
+  useEffect(() => {
+    const fetchPois = async () => {
+      try {
+        setLoadingPois(true)
+        setPoisError(null)
+        
+        // Get ALL POIs - they are general and not planet-specific
+        const allPois = await poisService.getAll()
+        
+        console.log(`📍 Loaded ${allPois.length} general POIs (displayed on all planets)`)
+        console.log('POIs details:', allPois.map(p => ({
+          title: p.title,
+          lat: p.lat,
+          lon: p.lon,
+          path: p.path
+        })))
+        
+        // Show ALL POIs on this planet (no filtering)
+        setPois(allPois)
+      } catch (error) {
+        console.error('Error loading POIs:', error)
+        setPoisError(error.message)
+        setPois([])
+      } finally {
+        setLoadingPois(false)
+      }
+    }
+    
+    fetchPois()
+  }, [name])
+  
+  // Convert POIs to 3D positions
+  const poiPositions = useMemo(() => {
+    if (!pois || pois.length === 0) return []
+    
+    return pois.map((poi, index) => {
+      // Validate coordinates
+      const lat = parseFloat(poi.lat)
+      const lon = parseFloat(poi.lon)
+      
+      if (isNaN(lat) || isNaN(lon)) {
+        console.warn(`Invalid coordinates for POI: ${poi.title}`, poi)
+        return null
+      }
+      
+      // Convert lat/lon to 3D cartesian coordinates
+      // Planet-specific radius adjustments (model scale = 1.6)
+      // Mars is our reference planet for calibration
+      const planetName = name.toLowerCase()
+      let radius
+      
+      switch(planetName) {
+        case 'mars':
+          // Mars reference model - pegado a la superficie
+          // Valores probados: 1.62 (muy separado), bajando a valores más cercanos
+          radius = 0.80
+          break
+        default:
+          // Use Mars calibration as base for other planets
+          radius = 0.80
+      }
+      
+      const position = latLonToCartesian(lat, lon, radius)
+      
+      console.log(`📍 ${poi.title}: lat=${lat}°, lon=${lon}° → pos=(${position.x.toFixed(3)}, ${position.y.toFixed(3)}, ${position.z.toFixed(3)})`)
+      
+      return {
+        id: poi._id || poi.id || `poi-${index}`,
+        poi,
+        position,
+        lat,
+        lon
+      }
+    }).filter(Boolean) // Remove null entries
+  }, [pois, name])
+  
+  // Log POI positions for debugging
+  useEffect(() => {
+    if (poiPositions.length > 0) {
+      console.log(`✅ Converted ${poiPositions.length} POIs to 3D positions:`)
+      poiPositions.slice(0, 3).forEach(item => {
+        console.log(`  📍 ${item.poi.title}: (${item.lat}°, ${item.lon}°) → (${item.position.x.toFixed(2)}, ${item.position.y.toFixed(2)}, ${item.position.z.toFixed(2)})`)
+      })
+    }
+  }, [poiPositions])
   
   // lock scroll while overlay is open
   useEffect(() => {
@@ -260,6 +355,23 @@ function PlanetDetailView({ name, onClose }) {
             💡 Click "View {info.name || name}" to explore high-resolution images
           </p>
         </div>
+
+        {/* POIs Counter */}
+        <div style={{ marginTop: 16, padding: 12, background: 'rgba(255, 217, 61, 0.1)', borderRadius: 8, border: '1px solid rgba(255, 217, 61, 0.3)' }}>
+          {loadingPois ? (
+            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', margin: 0 }}>
+              ⏳ Loading POIs...
+            </p>
+          ) : poisError ? (
+            <p style={{ fontSize: '13px', color: 'rgba(255, 100, 100, 0.9)', margin: 0 }}>
+              ⚠️ Error loading POIs: {poisError}
+            </p>
+          ) : (
+            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', margin: 0 }}>
+              📍 <strong>{poiPositions.length} Points of Interest</strong> visible on the 3D model
+            </p>
+          )}
+        </div>
       </aside>
 
       {/* Right: 3D canvas */}
@@ -268,19 +380,34 @@ function PlanetDetailView({ name, onClose }) {
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} />
           <Stars radius={100} depth={50} count={4000} factor={4} fade speed={1} />
-          <PlanetModel name={name} />
+          <PlanetModel name={name} poiPositions={poiPositions} />
         </Canvas>
       </div>
     </div>
   )
 }
 
-function PlanetModel({ name }) {
+function PlanetModel({ name, poiPositions = [] }) {
   const ref = useRef()
   const camRef = useRef()
   const dragging = useRef(false)
   const prev = useRef({ x: 0, y: 0 })
   const { camera } = useThree()
+  const [selectedPoi, setSelectedPoi] = useState(null)
+  
+  // Log when POIs are received
+  useEffect(() => {
+    if (poiPositions.length > 0) {
+      console.log(`🎯 PlanetModel received ${poiPositions.length} POI positions`)
+    }
+  }, [poiPositions])
+  
+  // Handle POI click
+  const handlePoiClick = (poi) => {
+    console.log('📍 POI clicked:', poi)
+    setSelectedPoi(poi)
+    // TODO: Open detail panel or perform action
+  }
 
   // animate camera in
   useFrame((state, delta) => {
@@ -345,6 +472,16 @@ function PlanetModel({ name }) {
         onPointerOut={onPointerUp}
       >
         <ModelLoader name={name} scale={1.6} />
+        
+        {/* Render interactive POI markers */}
+        {poiPositions.map((item) => (
+          <POIMarker
+            key={item.id}
+            position={item.position}
+            poi={item.poi}
+            onClick={handlePoiClick}
+          />
+        ))}
       </group>
     </group>
   )

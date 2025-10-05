@@ -16,6 +16,7 @@ import MyProfilePage from './pages/MyProfilePage'
 import MyBookmarksPage from './pages/MyBookmarksPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ImageViewerPage from './pages/ImageViewerPage'
+import TestCoordinatesPage from './pages/TestCoordinatesPage'
 
 function AppContent() {
   const location = useLocation()
@@ -45,6 +46,7 @@ function AppContent() {
           <Route path="/myprofile" element={<MyProfilePage />} />
           <Route path="/mybookmarks" element={<MyBookmarksPage />} />
           <Route path="/image/:image_name" element={<ImageViewerPage />} />
+          <Route path="/test-coordinates" element={<TestCoordinatesPage />} />
           <Route path="/:name" element={<PlanetPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

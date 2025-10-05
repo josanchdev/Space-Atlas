@@ -16,7 +16,7 @@ function Hotspot({ pos, label }) {
     >
       <sphereGeometry args={[0.02, 8, 8]} />
       <meshBasicMaterial color={hover ? 'orange' : 'yellow'} />
-      <Html distanceFactor={10} style={{ pointerEvents: 'none', transform: 'translateY(-1rem)' }}>
+      <Html distanceFactor={15} style={{ pointerEvents: 'none', transform: 'translateY(-1rem)' }}>
         <div style={{ background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '2px 6px', borderRadius: 4, fontSize: 12 }}>{label}</div>
       </Html>
     </mesh>
