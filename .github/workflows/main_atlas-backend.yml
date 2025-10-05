@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend   # <--- sets context for all following run steps!
     permissions:
       contents: read #This is required for actions/checkout
 
@@ -33,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: backend   # <--- upload the backend folder!
 
   deploy:
     runs-on: ubuntu-latest
@@ -61,5 +64,6 @@ jobs:
         with:
           app-name: 'atlas-backend'
           slot-name: 'Production'
-          package: .
+          package: backend   # <--- deploy the backend folder!
+
           
