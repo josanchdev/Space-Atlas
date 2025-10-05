@@ -1,5 +1,5 @@
 import { Github, Mail, Instagram } from 'lucide-react'
-import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.webp'
+import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.svg'
 import '../styles/landing.css'
 
 export default function Footer() {

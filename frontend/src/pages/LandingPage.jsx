@@ -1,74 +1,42 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 import { Rocket, Globe, Image, Telescope, Zap, Database, Share2, BookOpen, TrendingUp, Star, ArrowRight } from 'lucide-react'
-import { transformPoisToImages, getRecentImages, PLACEHOLDER_IMAGES } from '../utils/imageDataHelpers'
-import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.webp'
 import '../styles/landing.css'
 
 export default function LandingPage() {
   const navigate = useNavigate()
-  const [recentImages, setRecentImages] = useState(PLACEHOLDER_IMAGES.landing)
-  const [isLoading, setIsLoading] = useState(true)
-  const apiBase = import.meta.env?.VITE_API_BASE || 'http://localhost:3000/api'
 
   const handleNavigation = (path) => {
     window.scrollTo(0, 0)
     navigate(path)
   }
 
-  useEffect(() => {
-    let mounted = true
-    
-    // Fetch recent images from backend
-    fetch(`${apiBase}/pois`)
-      .then((r) => {
-        if (!r.ok) throw new Error('Failed to fetch')
-        return r.json()
-      })
-      .then((data) => {
-        if (!mounted) return
-        
-        // Transform POIs to image format
-        const transformedImages = transformPoisToImages(data)
-        
-        // Get the 3 most recent images
-        const recent = getRecentImages(transformedImages, 3)
-        
-        // Si no hay datos suficientes, usar placeholders
-        if (recent.length === 0) {
-          console.log('No recent images found, using placeholder data')
-          setRecentImages(PLACEHOLDER_IMAGES.landing)
-        } else {
-          console.log(`Loaded ${recent.length} recent images from backend`)
-          // Añadir imageUrl placeholder si no existe
-          const imagesWithUrl = recent.map(img => ({
-            ...img,
-            imageUrl: img.thumbnail || img.imageUrl || PLACEHOLDER_IMAGES.landing[0].imageUrl,
-            author: img.author || 'Scientific Community',
-            description: img.description || 'High-resolution image from space exploration'
-          }))
-          setRecentImages(imagesWithUrl)
-        }
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        console.error('Error fetching recent images:', error)
-        if (!mounted) return
-        // Use placeholder data on error
-        console.log('Using placeholder data due to error')
-        setRecentImages(PLACEHOLDER_IMAGES.landing)
-        setIsLoading(false)
-      })
-
-    return () => {
-      mounted = false
+  // Datos de ejemplo de imágenes recientes de la comunidad científica
+  const recentImages = [
+    {
+      id: 1,
+      title: "James Webb's Deep Field",
+      description: "The deepest and sharpest infrared image of the distant universe captured by JWST",
+      imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.shopify.com%2Fs%2Ffiles%2F1%2F0535%2F0532%2F7303%2Fproducts%2FA0001_-_JWST_Deep_Field-web.jpg%3Fv%3D1657644367&f=1?w=800&h=600&fit=crop",
+      author: "NASA/ESA",
+      date: "Oct 2025"
+    },
+    {
+      id: 2,
+      title: "Pillars of Creation",
+      description: "Stunning new view of iconic stellar nursery in the Eagle Nebula",
+      imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fscitechdaily.com%2Fimages%2FWebb-Pillars-of-Creation-scaled.jpg&f=1&nofb=1&ipt=4a014a6a24350f4f4a5012a510c237eab192b3655e852e1ca42871d555b7fa1a?w=800&h=600&fit=crop",
+      author: "NASA/JPL",
+      date: "Sep 2025"
+    },
+    {
+      id: 3,
+      title: "Southern Ring Nebula",
+      description: "Unprecedented detail of planetary nebula revealing dying star's final moments",
+      imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.esa.int%2Fvar%2Fesa%2Fstorage%2Fimages%2Fesa_multimedia%2Fimages%2F2023%2F08%2Fwebb_captures_detailed_beauty_of_ring_nebula_nircam_image%2F25047351-1-eng-GB%2FWebb_captures_detailed_beauty_of_Ring_Nebula_NIRCam_image_pillars.jpg&f=1&nofb=1&ipt=5ef047826c1206ad5ba3e3f9f494ee4f71e2837108b27defb33a6e6f3877df8d?w=800&h=600&fit=crop",
+      author: "ESO",
+      date: "Sep 2025"
     }
-  }, [])
-
-  const handleImageClick = (image) => {
-    const imageName = String(image.filename).replace(/\.dzi$/i, '')
-    navigate(`/image/${imageName}?planet=${image.planet}&source=landing&title=${encodeURIComponent(image.title)}`)
-  }
+  ]
 
   // Features del producto
   const features = [
@@ -148,41 +116,29 @@ export default function LandingPage() {
           <p className="section-subtitle">Latest images from the scientific community</p>
         </div>
 
-        {isLoading ? (
-          <div style={{ textAlign: 'center', padding: '60px 20px', color: 'rgba(255,255,255,0.6)' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>⏳</div>
-            <p>Loading recent discoveries...</p>
-          </div>
-        ) : (
-          <div className="recent-images-grid">
-            {recentImages.map((image) => (
-              <div 
-                key={image.id} 
-                className="image-card"
-                onClick={() => handleImageClick(image)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div className="image-card-media">
-                  <img src={image.imageUrl} alt={image.title} />
-                  <div className="image-card-overlay">
-                    <button className="view-btn">
-                      <Image size={20} />
-                      View Details
-                    </button>
-                  </div>
-                </div>
-                <div className="image-card-content">
-                  <h3 className="image-card-title">{image.title}</h3>
-                  <p className="image-card-description">{image.description}</p>
-                  <div className="image-card-meta">
-                    <span className="image-author">{image.author}</span>
-                    <span className="image-date">{image.date}</span>
-                  </div>
+        <div className="recent-images-grid">
+          {recentImages.map((image) => (
+            <div key={image.id} className="image-card">
+              <div className="image-card-media">
+                <img src={image.imageUrl} alt={image.title} />
+                <div className="image-card-overlay">
+                  <button className="view-btn">
+                    <Image size={20} />
+                    View Details
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+              <div className="image-card-content">
+                <h3 className="image-card-title">{image.title}</h3>
+                <p className="image-card-description">{image.description}</p>
+                <div className="image-card-meta">
+                  <span className="image-author">{image.author}</span>
+                  <span className="image-date">{image.date}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
       {/* Features Section */}
       <section className="features-section">
