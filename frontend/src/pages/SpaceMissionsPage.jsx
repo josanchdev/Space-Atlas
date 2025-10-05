@@ -17,20 +17,21 @@ export default function SpaceMissionsPage() {
   const missions = [
     {
       id: 1,
-      name: 'EUROPA CLIPPER',
-      name_en: 'europa',
-      description: 'Explore Jupiter\'s icy moon Europa to investigate its potential habitability and search for conditions suitable for life.',
-      year: '2024-2030',
-      image: europaImage
-    },
-    {
-      id: 2,
       name: 'MARS ROVERS',
       name_en: 'mars',
       description: 'Robotic explorers discovering the secrets of the Red Planet, searching for signs of ancient life and paving the way for human exploration.',
       year: '2020-Present',
       image: marsImage
     },
+    {
+      id: 2,
+      name: 'EUROPA CLIPPER',
+      name_en: 'europa',
+      description: 'Explore Jupiter\'s icy moon Europa to investigate its potential habitability and search for conditions suitable for life.',
+      year: '2024-2030',
+      image: europaImage
+    },
+    
     {
       id: 3,
       name: 'ARTEMIS II',
