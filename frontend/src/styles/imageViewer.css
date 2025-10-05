@@ -303,12 +303,12 @@
 }
 
 /* OpenSeadragon custom styling */
-.image-viewer-container :global(.openseadragon-container) {
+.image-viewer-container .openseadragon-container {
   width: 100% !important;
   height: 100% !important;
 }
 
-.image-viewer-container :global(.navigator) {
+.image-viewer-container .navigator {
   border: 2px solid rgba(154, 209, 255, 0.5) !important;
   background: rgba(0, 0, 0, 0.8) !important;
 }
