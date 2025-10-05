@@ -6,7 +6,6 @@ import Footer from './components/Footer'
 import LandingPage from './pages/LandingPage'
 import PlanetPage from './pages/PlanetPage'
 import SolarSystem from './components/SolarSystem'
-import NewsPage from './pages/NewsPage'
 import ExplorePage from './pages/ExplorePage'
 import ScientistsPage from './pages/ScientistsPage'
 import SpaceMissionsPage from './pages/SpaceMissionsPage'
@@ -35,7 +34,6 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/solar-system" element={<SolarSystem />} />
-          <Route path="/news" element={<NewsPage />} />
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/space-missions" element={<SpaceMissionsPage />} />
           <Route path="/space-mission/:mission_name" element={<SpaceMissionDetailPage />} />
