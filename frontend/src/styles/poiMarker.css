@@ -1,0 +1,145 @@
+.poi-marker {
+  position: absolute;
+  cursor: pointer;
+  z-index: 100;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Centrar horizontalmente y bajar para que la punta del icono esté en el centro */
+  /* El icono tiene ~24px de alto, bajamos ~12px (mitad) para centrar la punta */
+  transform: translate(-50%, -20px);
+  pointer-events: auto;
+}
+
+.poi-marker:hover {
+  transform: translate(-50%, -12px) scale(1.2);
+  z-index: 101;
+}
+
+.poi-icon {
+  color: #FFD54F;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+  animation: poi-pulse 2s ease-in-out infinite;
+  /* Asegurar que el icono sea el punto de referencia */
+  display: block;
+  flex-shrink: 0;
+}
+
+@keyframes poi-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.poi-label {
+  margin-top: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #FFD54F;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 213, 79, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  /* Evitar que la etiqueta afecte el posicionamiento */
+  position: relative;
+  pointer-events: none;
+}
+
+.poi-marker:hover .poi-label {
+  opacity: 1;
+}
+
+/* Panel de información del POI */
+.poi-info-panel {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  width: 300px;
+  background: rgba(15, 20, 25, 0.95);
+  border: 1px solid rgba(144, 202, 249, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.poi-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: #ff6b6b;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.poi-close-btn:hover {
+  background: rgba(255, 107, 107, 0.3);
+  transform: rotate(90deg);
+}
+
+.poi-title {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #90CAF9;
+}
+
+.poi-description {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #B0BEC5;
+}
+
+.poi-coords {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: #78909C;
+  padding-top: 12px;
+  border-top: 1px solid rgba(144, 202, 249, 0.2);
+}
+
+.poi-coords span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .poi-info-panel {
+    width: calc(100% - 40px);
+    left: 20px;
+    right: 20px;
+    top: 70px;
+  }
+}

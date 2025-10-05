@@ -24,6 +24,10 @@ const PoiModel = new mongoose.Schema(
     },
     path: {
       type: String // "[num]/[num]_[num]"
+    },
+    origin: {
+      type: String,
+      default: ""
     }
   },
   {

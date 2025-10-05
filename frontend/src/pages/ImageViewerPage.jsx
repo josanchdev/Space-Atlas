@@ -2,6 +2,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { ArrowLeft, Bookmark, MessageSquare, Share2 } from 'lucide-react'
 import DziViewer from '../components/DziViewer'
+import { poisService } from '../services/poisService'
 import '../styles/imageViewer.css'
 
 /**
@@ -35,6 +36,7 @@ export default function ImageViewerPage() {
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [pois, setPois] = useState([])
 
   // Get API base URL from environment
   const apiBase = import.meta.env?.VITE_API_URL || 'http://localhost:3000/api'
@@ -80,6 +82,28 @@ export default function ImageViewerPage() {
     
     // Check if image is bookmarked (from localStorage or API)
     checkBookmarkStatus()
+
+    // Cargar POIs desde el backend
+    const fetchPois = async () => {
+      try {
+        const allPois = await poisService.getAll()
+        
+        // Filtrar POIs por path si tenemos el dato del planeta/imagen
+        // El path debería coincidir con el nombre del planeta o imagen actual
+        const currentPath = planet || image_name
+        const filteredPois = currentPath 
+          ? allPois.filter(poi => poi.origin?.toLowerCase() === currentPath.toLowerCase())
+          : allPois
+        
+        setPois(filteredPois)
+        console.log(`${filteredPois.length} POIs cargados para ${currentPath}`)
+      } catch (error) {
+        console.error('Error cargando POIs:', error)
+        setPois([]) // Si hay error, mostrar array vacío
+      }
+    }
+
+    fetchPois()
   }, [image_name, planet])
 
   // Construct DZI URL
@@ -200,6 +224,7 @@ export default function ImageViewerPage() {
           <DziViewer 
             dziUrl={dziUrl} 
             imageName={image_name}
+            pois={pois}
           />
         )}
       </div>
