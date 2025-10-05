@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { Rocket, Globe, Image, Telescope, Zap, Database, Share2, BookOpen, TrendingUp, Star, ArrowRight } from 'lucide-react'
-import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.webp'
 import '../styles/landing.css'
 
 export default function LandingPage() {
@@ -119,7 +118,11 @@ export default function LandingPage() {
 
         <div className="recent-images-grid">
           {recentImages.map((image) => (
-            <div key={image.id} className="image-card">
+            <div 
+              key={image.id} 
+              className="image-card"
+              onClick={() => handleNavigation(`/image/${encodeURIComponent(image.title.replace(/\s+/g, '_'))}`)}
+            >
               <div className="image-card-media">
                 <img src={image.imageUrl} alt={image.title} />
                 <div className="image-card-overlay">

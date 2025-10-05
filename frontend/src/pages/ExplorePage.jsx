@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Search, Image } from 'lucide-react'
 import '../styles/explorePage.css'
 
 export default function ExplorePage() {
+  const navigate = useNavigate()
   const [query, setQuery] = useState('')
 
   // Datos de imágenes científicas (los mismos de la landing)
@@ -72,7 +74,11 @@ export default function ExplorePage() {
           <div className="no-results">No images match your search. Try a different query.</div>
         ) : (
           filtered.map((image) => (
-            <div key={image.id} className="image-card">
+            <div 
+              key={image.id} 
+              className="image-card"
+              onClick={() => navigate(`/image/${encodeURIComponent(image.title.replace(/\s+/g, '_'))}`)}
+            >
               <div className="image-card-media">
                 <img src={image.imageUrl} alt={image.title} />
                 <div className="image-card-overlay">

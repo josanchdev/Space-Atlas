@@ -365,7 +365,7 @@ export default function SolarSystem() {
       {/* Back button - top left */}
       <div className="solar-back-button-container" style={{ position: 'absolute', left: 20, top: 20, zIndex: 1001 }}>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/')}
           style={{
             display: 'flex',
             alignItems: 'center',

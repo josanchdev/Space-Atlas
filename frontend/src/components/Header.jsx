@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { UserCircle, LogOut, Bookmark, Settings } from 'lucide-react'
-import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.webp'
+import logoSpaceAtlas from '../assets/logo/LogoSpaceAtlas.svg'
 import '../styles/header.css'
 
 export default function Header() {
