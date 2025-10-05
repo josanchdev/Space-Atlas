@@ -168,19 +168,20 @@ function PlanetDetailView({ name, onClose }) {
         setLoadingPois(true)
         setPoisError(null)
         
-        // Get ALL POIs - they are general and not planet-specific
-        const allPois = await poisService.getAll()
+        // Get POIs filtered by origin (planet name)
+        const filteredPois = await poisService.getByOrigin(name)
         
-        console.log(`📍 Loaded ${allPois.length} general POIs (displayed on all planets)`)
-        console.log('POIs details:', allPois.map(p => ({
+        console.log(`📍 Loaded ${filteredPois.length} POIs for ${name}`)
+        console.log('POIs details:', filteredPois.map(p => ({
           title: p.title,
           lat: p.lat,
           lon: p.lon,
-          path: p.path
+          path: p.path,
+          origin: p.origin
         })))
         
-        // Show ALL POIs on this planet (no filtering)
-        setPois(allPois)
+        // Show only POIs that match this planet's origin
+        setPois(filteredPois)
       } catch (error) {
         console.error('Error loading POIs:', error)
         setPoisError(error.message)

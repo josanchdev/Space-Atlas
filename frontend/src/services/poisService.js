@@ -31,6 +31,18 @@ export const poisService = {
   },
 
   /**
+   * Obtiene POIs filtrados por origin (nombre del planeta/cuerpo celeste)
+   * @param {string} originName
+   * @returns {Promise<Array>}
+   */
+  async getByOrigin(originName) {
+    const allPois = await this.getAll()
+    return allPois.filter(poi => 
+      poi.origin?.toLowerCase() === originName?.toLowerCase()
+    )
+  },
+
+  /**
    * Crea un nuevo POI
    * @param {Object} poiData - { title, description,lat, lon, path}
    * @returns {Promise<Object>}
