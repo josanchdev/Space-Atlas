@@ -234,6 +234,40 @@
   text-transform: capitalize;
 }
 
+/* Sección de explicación con IA */
+.poi-ai-explanation {
+  background: rgba(100, 181, 246, 0.08);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.poi-ai-explanation .poi-detail-label {
+  color: #64B5F6;
+  display: flex;
+  align-items: center;
+}
+
+.poi-explanation-text {
+  color: #E3F2FD;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+/* Error de explicación */
+.poi-ai-error {
+  background: rgba(244, 67, 54, 0.08);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+.poi-error-text {
+  color: #EF5350;
+  font-size: 13px;
+  margin: 0;
+}
+
 /* Scrollbar personalizado */
 .poi-sidebar-content::-webkit-scrollbar {
   width: 6px;
@@ -308,9 +342,18 @@
   transform: scale(1.05);
 }
 
+.robot-button-sidebar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .robot-button-sidebar svg {
   display: block;
   animation: robotFloat 3s ease-in-out infinite;
+}
+
+.robot-button-sidebar .spinner {
+  animation: spin 1s linear infinite;
 }
 
 @keyframes robotFloat {
@@ -319,6 +362,15 @@
   }
   50% {
     transform: translateY(-4px);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 

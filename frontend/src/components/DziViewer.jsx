@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import OpenSeadragon from 'openseadragon'
 import POIMarker from './POIMarker'
-import { X, Bot } from 'lucide-react'
+import { X, Bot, Loader2 } from 'lucide-react'
+import { poisService } from '../services/poisService'
 import '../styles/poiMarker.css'
 
 /**
@@ -18,6 +19,9 @@ export default function DziViewer({ dziUrl, imageName, pois = [] }) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedPoi, setSelectedPoi] = useState(null)
+  const [aiExplanation, setAiExplanation] = useState(null)
+  const [isLoadingExplanation, setIsLoadingExplanation] = useState(false)
+  const [explanationError, setExplanationError] = useState(null)
   const overlaysRef = useRef([])
 
   useEffect(() => {
@@ -203,10 +207,43 @@ export default function DziViewer({ dziUrl, imageName, pois = [] }) {
       viewerInstance.current.viewport.goHome(true)
     }
     
+    // Resetear explicación al cerrar
+    setAiExplanation(null)
+    setExplanationError(null)
+    
     // Pequeño delay para que se vea la animación del zoom
     setTimeout(() => {
       setSelectedPoi(null)
     }, 300)
+  }
+
+  /**
+   * Maneja el click en el botón de explicación con IA
+   */
+  const handleExplainClick = async () => {
+    if (!selectedPoi) return
+
+    setIsLoadingExplanation(true)
+    setExplanationError(null)
+
+    try {
+      const response = await poisService.explain({
+        title: selectedPoi.title,
+        description: selectedPoi.description,
+        path: selectedPoi.path
+      })
+
+      if (response.success) {
+        setAiExplanation(response.response)
+      } else {
+        setExplanationError('Failed to get explanation')
+      }
+    } catch (error) {
+      console.error('Error explaining POI:', error)
+      setExplanationError('Error connecting to AI service')
+    } finally {
+      setIsLoadingExplanation(false)
+    }
   }
 
   return (
@@ -303,15 +340,38 @@ export default function DziViewer({ dziUrl, imageName, pois = [] }) {
                 <p className="poi-detail-value poi-origin-badge">{selectedPoi.origin}</p>
               </div>
             )}
+
+            {/* Sección de explicación con IA */}
+            {aiExplanation && (
+              <div className="poi-detail-section poi-ai-explanation">
+                <h4 className="poi-detail-label">
+                  <Bot size={14} style={{ display: 'inline', marginRight: '6px' }} />
+                  AI Explanation
+                </h4>
+                <p className="poi-detail-value poi-explanation-text">{aiExplanation}</p>
+              </div>
+            )}
+
+            {/* Error en la explicación */}
+            {explanationError && (
+              <div className="poi-detail-section poi-ai-error">
+                <p className="poi-error-text">{explanationError}</p>
+              </div>
+            )}
           </div>
 
           {/* Botón del robot en la esquina inferior derecha del sidebar */}
           <button 
             className="robot-button-sidebar"
-            onClick={() => console.log('Robot button clicked')}
-            title="AI Assistant"
+            onClick={handleExplainClick}
+            disabled={isLoadingExplanation}
+            title="Explain with IA"
           >
-            <Bot size={24} strokeWidth={2} />
+            {isLoadingExplanation ? (
+              <Loader2 size={24} strokeWidth={2} className="spinner" />
+            ) : (
+              <Bot size={24} strokeWidth={2} />
+            )}
           </button>
         </div>
       )}
