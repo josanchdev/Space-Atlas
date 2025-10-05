@@ -6,7 +6,9 @@ export const poisService = {
    * @returns {Promise<Array>}
    */
   async getAll() {
-    return apiClient.get('/pois')
+    const pois = await apiClient.get('/pois')
+    console.log(pois)
+    return pois
   },
 
   /**
