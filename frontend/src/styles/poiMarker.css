@@ -89,7 +89,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 380px;
+  width: 500px;
   height: 100vh;
   background: linear-gradient(135deg, rgba(15, 20, 25, 0.98) 0%, rgba(25, 30, 35, 0.98) 100%);
   border-left: 2px solid rgba(144, 202, 249, 0.3);
