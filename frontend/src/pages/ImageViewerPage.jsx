@@ -18,10 +18,18 @@ export default function ImageViewerPage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   
-  // Optional query params for additional context
-  const planet = searchParams.get('planet') // e.g., "mars", "earth"
-  const source = searchParams.get('source') // e.g., "landing", "explore", "news", "bookmarks"
-  const title = searchParams.get('title') || image_name
+  // Optional query params for additional context (backward compatibility)
+  const planetParam = searchParams.get('planet')
+  const source = searchParams.get('source')
+  const titleParam = searchParams.get('title')
+  
+  // List of valid celestial bodies
+  const validCelestialBodies = ['sun', 'mercury', 'venus', 'earth', 'moon', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto']
+  
+  // Determine if image_name is a planet or a regular image
+  const isPlanet = validCelestialBodies.includes(image_name?.toLowerCase())
+  const planet = isPlanet ? image_name.toLowerCase() : planetParam
+  const title = titleParam || (isPlanet ? image_name.charAt(0).toUpperCase() + image_name.slice(1) : image_name)
   
   const [imageData, setImageData] = useState(null)
   const [isBookmarked, setIsBookmarked] = useState(false)
@@ -36,7 +44,7 @@ export default function ImageViewerPage() {
     const fetchImageData = async () => {
       setIsLoading(true)
       try {
-        // If we have planet info, use planet-specific endpoint
+        // Determine the endpoint based on whether it's a planet or regular image
         const endpoint = planet 
           ? `${apiBase}/dzi/${planet}/out_dzi.dzi`
           : `${apiBase}/dzi/${image_name}/out_dzi.dzi`

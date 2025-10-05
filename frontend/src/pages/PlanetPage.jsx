@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Menu, X } from 'lucide-react'
-import loadImages from '../utils/loadImages'
+import { ArrowLeft, Menu, X, Eye } from 'lucide-react'
 import ModelLoader from '../components/ModelLoader'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
@@ -10,10 +9,122 @@ import * as THREE from 'three'
 import NotFoundPage from './NotFoundPage'
 import '../styles/planetPage.css'
 
+// Information for each celestial body
+const celestialBodiesInfo = {
+  sun: {
+    name: 'Sun',
+    description: 'The Sun is the star at the center of our Solar System and the closest star to Earth. It is an incandescent sphere of plasma with a diameter of approximately 1,392,000 km.',
+    details: [
+      'Type: G-type main-sequence star',
+      'Age: ~4.6 billion years',
+      'Surface temperature: ~5,500°C',
+      'Distance from Earth: ~150 million km'
+    ]
+  },
+  mercury: {
+    name: 'Mercury',
+    description: 'Mercury is the smallest planet in our Solar System and the closest to the Sun. It has no significant atmosphere and its surface is covered with craters.',
+    details: [
+      'Type: Terrestrial planet',
+      'Diameter: 4,879 km',
+      'Orbital period: 88 Earth days',
+      'Temperature: -173°C to 427°C'
+    ]
+  },
+  venus: {
+    name: 'Venus',
+    description: 'Venus is the second planet from the Sun and is similar in size to Earth. Its dense CO₂ atmosphere produces an extreme greenhouse effect.',
+    details: [
+      'Type: Terrestrial planet',
+      'Diameter: 12,104 km',
+      'Orbital period: 225 Earth days',
+      'Surface temperature: ~462°C'
+    ]
+  },
+  earth: {
+    name: 'Earth',
+    description: 'Earth is the third planet from the Sun and the only known planet to harbor life. It has an atmosphere rich in nitrogen and oxygen.',
+    details: [
+      'Type: Terrestrial planet',
+      'Diameter: 12,742 km',
+      'Orbital period: 365.25 days',
+      'Average temperature: 15°C'
+    ]
+  },
+  moon: {
+    name: 'Moon',
+    description: 'The Moon is Earth\'s only natural satellite. Its gravitational influence produces the oceanic tides on our planet.',
+    details: [
+      'Type: Natural satellite',
+      'Diameter: 3,474 km',
+      'Orbital period: 27.3 Earth days',
+      'Distance from Earth: ~384,400 km'
+    ]
+  },
+  mars: {
+    name: 'Mars',
+    description: 'Mars is the fourth planet from the Sun, known as the "Red Planet" due to iron oxide on its surface. It is a key target for space exploration.',
+    details: [
+      'Type: Terrestrial planet',
+      'Diameter: 6,779 km',
+      'Orbital period: 687 Earth days',
+      'Temperature: -87°C to -5°C'
+    ]
+  },
+  jupiter: {
+    name: 'Jupiter',
+    description: 'Jupiter is the largest planet in our Solar System, a gas giant with a Great Red Spot that is a massive storm larger than Earth.',
+    details: [
+      'Type: Gas giant',
+      'Diameter: 139,820 km',
+      'Orbital period: 12 Earth years',
+      'Known moons: 95+'
+    ]
+  },
+  saturn: {
+    name: 'Saturn',
+    description: 'Saturn is famous for its spectacular ring system composed of ice and rock. It is the second largest planet in the Solar System.',
+    details: [
+      'Type: Gas giant',
+      'Diameter: 116,460 km',
+      'Orbital period: 29 Earth years',
+      'Known moons: 146+'
+    ]
+  },
+  uranus: {
+    name: 'Uranus',
+    description: 'Uranus is an ice giant with a unique feature: it rotates on its side. Its atmosphere contains methane that gives it a blue-green color.',
+    details: [
+      'Type: Ice giant',
+      'Diameter: 50,724 km',
+      'Orbital period: 84 Earth years',
+      'Axial tilt: 98°'
+    ]
+  },
+  neptune: {
+    name: 'Neptune',
+    description: 'Neptune is the eighth and farthest planet from the Sun. It is known for its extremely fast winds and intense blue color.',
+    details: [
+      'Type: Ice giant',
+      'Diameter: 49,244 km',
+      'Orbital period: 165 Earth years',
+      'Winds: up to 2,100 km/h'
+    ]
+  },
+  pluto: {
+    name: 'Pluto',
+    description: 'Pluto is a dwarf planet in the Kuiper Belt. Although no longer considered a major planet, it remains a fascinating object of study.',
+    details: [
+      'Type: Dwarf planet',
+      'Diameter: 2,376 km',
+      'Orbital period: 248 Earth years',
+      'Known moons: 5'
+    ]
+  }
+}
+
 export default function PlanetPage() {
   const { name } = useParams()
-  const [imagesData, setImagesData] = useState(null)
-  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   // Lista de planetas válidos
@@ -24,31 +135,24 @@ export default function PlanetPage() {
     return <NotFoundPage />
   }
 
-  useEffect(() => {
-    setImagesData(null)
-    setError(null)
-    loadImages(name)
-      .then((data) => setImagesData(data))
-      .catch((err) => setError(err.message || String(err)))
-  }, [name])
-
   return (
     <main style={{ padding: 20 }}>
       <h2>{name?.charAt(0).toUpperCase() + name?.slice(1)}</h2>
-      {error && <p style={{ color: 'red' }}>⚠️ Couldn't load images from the server</p>}
       <div>
-        <h3>Images ({imagesData?.images?.length ?? 0})</h3>
         {/* Fullscreen overlay for the 3D model + left sidebar */}
-        <PlanetDetailView name={name} imagesData={imagesData} error={error} onClose={() => navigate(-1)} />
+        <PlanetDetailView name={name} onClose={() => navigate('/solar-system')} />
       </div>
     </main>
   )
 }
 
-function PlanetDetailView({ name, imagesData, error, onClose }) {
+function PlanetDetailView({ name, onClose }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const navigate = useNavigate()
   
-  // Camera will animate from further away to a close distance, then the user can left-drag to rotate
+  // Obtener información del cuerpo celeste
+  const info = celestialBodiesInfo[name.toLowerCase()] || {}
+  
   // lock scroll while overlay is open
   useEffect(() => {
     const prev = document.body.style.overflow
@@ -58,26 +162,10 @@ function PlanetDetailView({ name, imagesData, error, onClose }) {
     }
   }, [])
 
-  // Simple helper to normalise different shapes of entries in images.json
-  function normalizeEntries(raw) {
-    if (!raw) return []
-    const arr = raw.images ?? raw
-    if (!Array.isArray(arr)) return []
-    return arr.map((it) => {
-      if (!it) return null
-      if (typeof it === 'string') {
-        // string may be filename like 'image1.dzi' or 'image1'
-        const file = it.endsWith('.dzi') ? it : `${it}.dzi`
-        return { title: it.replace(/\.dzi$/i, ''), file }
-      }
-      // object: common keys
-      const file = it.dzi || it.file || it.url || it.path || it.name || ''
-      const title = it.title || it.name || (typeof file === 'string' ? String(file).replace(/\.dzi$/i, '') : '')
-      return { title, file, meta: it }
-    }).filter(Boolean)
+  const handleViewPlanet = () => {
+    // Navigate to image viewer with planet name only
+    navigate(`/image/${name.toLowerCase()}`)
   }
-
-  const entries = normalizeEntries(imagesData)
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.95)', display: 'flex', color: '#fff' }}>
@@ -101,16 +189,77 @@ function PlanetDetailView({ name, imagesData, error, onClose }) {
 
       {/* Left sidebar */}
       <aside className={`planet-sidebar ${isSidebarOpen ? 'open' : ''}`} style={{ width: 360, maxWidth: '36vw', minWidth: 280, padding: 20, boxSizing: 'border-box', overflowY: 'auto', borderRight: '1px solid rgba(255,255,255,0.04)' }}>
-        <h2 style={{ marginTop: 4 }}>{name?.charAt(0).toUpperCase() + name?.slice(1)}</h2>
-        <p style={{ color: 'rgba(255,255,255,0.8)' }}>Información del cuerpo celeste. Aquí puedes añadir descripción, fecha de las imágenes, fuente y coordenadas.</p>
-
-        <div style={{ marginTop: 12 }}>
-          <strong>Imágenes DZI ({entries.length})</strong>
+        <h2 style={{ marginTop: 4, marginBottom: 16 }}>{info.name || name.charAt(0).toUpperCase() + name.slice(1)}</h2>
+        
+        {/* Description */}
+        <div style={{ marginBottom: 24 }}>
+          <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, fontSize: '15px' }}>
+            {info.description || 'Information about this celestial body.'}
+          </p>
         </div>
 
-        {error && <p style={{ color: '#ff8b8b', marginTop: 12, padding: 10, background: 'rgba(255, 59, 48, 0.1)', borderRadius: 6, border: '1px solid rgba(255, 59, 48, 0.3)' }}>⚠️ Couldn't load images from the server</p>}
+        {/* Details */}
+        {info.details && info.details.length > 0 && (
+          <div style={{ marginBottom: 24 }}>
+            <h3 style={{ fontSize: '16px', marginBottom: 12, color: 'rgba(154, 209, 255, 0.9)' }}>Characteristics</h3>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {info.details.map((detail, idx) => (
+                <li key={idx} style={{ 
+                  padding: '8px 0', 
+                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                  color: 'rgba(255,255,255,0.8)',
+                  fontSize: '14px'
+                }}>
+                  {detail}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-        <ImageSearchList entries={entries} planetName={name} />
+        {/* Big button to view the planet */}
+        <button
+          onClick={handleViewPlanet}
+          style={{
+            width: '100%',
+            padding: '16px 24px',
+            background: 'linear-gradient(135deg, rgba(154, 209, 255, 0.2) 0%, rgba(100, 149, 237, 0.2) 100%)',
+            border: '2px solid rgba(154, 209, 255, 0.5)',
+            borderRadius: '12px',
+            color: '#9ad1ff',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: '600',
+            transition: 'all 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            marginTop: '20px'
+          }}
+          onMouseEnter={(ev) => {
+            ev.currentTarget.style.background = 'linear-gradient(135deg, rgba(154, 209, 255, 0.35) 0%, rgba(100, 149, 237, 0.35) 100%)'
+            ev.currentTarget.style.borderColor = 'rgba(154, 209, 255, 0.8)'
+            ev.currentTarget.style.transform = 'translateY(-2px)'
+            ev.currentTarget.style.boxShadow = '0 8px 20px rgba(154, 209, 255, 0.3)'
+          }}
+          onMouseLeave={(ev) => {
+            ev.currentTarget.style.background = 'linear-gradient(135deg, rgba(154, 209, 255, 0.2) 0%, rgba(100, 149, 237, 0.2) 100%)'
+            ev.currentTarget.style.borderColor = 'rgba(154, 209, 255, 0.5)'
+            ev.currentTarget.style.transform = 'translateY(0)'
+            ev.currentTarget.style.boxShadow = 'none'
+          }}
+        >
+          <Eye size={24} />
+          <span>View {info.name || name}</span>
+        </button>
+
+        {/* Additional information */}
+        <div style={{ marginTop: 24, padding: 12, background: 'rgba(154, 209, 255, 0.05)', borderRadius: 8, border: '1px solid rgba(154, 209, 255, 0.1)' }}>
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', margin: 0 }}>
+            💡 Click "View {info.name || name}" to explore high-resolution images
+          </p>
+        </div>
       </aside>
 
       {/* Right: 3D canvas */}
@@ -121,89 +270,6 @@ function PlanetDetailView({ name, imagesData, error, onClose }) {
           <Stars radius={100} depth={50} count={4000} factor={4} fade speed={1} />
           <PlanetModel name={name} />
         </Canvas>
-      </div>
-    </div>
-  )
-}
-
-function ImageSearchList({ entries, planetName }) {
-  const [q, setQ] = useState('')
-  const navigate = useNavigate()
-
-  const filtered = entries.filter((e) => {
-    if (!e || !e.file) return false
-    const filename = String(e.file).toLowerCase()
-    const title = String(e.title || '').toLowerCase()
-    const term = q.trim().toLowerCase()
-    if (!term) return true
-    return filename.includes(term) || title.includes(term)
-  })
-
-  const handleImageClick = (entry) => {
-    // Navigate to universal image viewer
-    const imageName = String(entry.file).replace(/\.dzi$/i, '')
-    navigate(`/image/${imageName}?planet=${planetName}&source=planet&title=${encodeURIComponent(entry.title || imageName)}`)
-  }
-
-  return (
-    <div style={{ marginTop: 12 }}>
-      <input
-        placeholder="Buscar imágenes..."
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)', color: '#fff', boxSizing: 'border-box' }}
-      />
-
-      <div style={{ marginTop: 12 }}>
-        {filtered.length === 0 && <p style={{ color: 'rgba(255,255,255,0.6)' }}>No se han encontrado imágenes.</p>}
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {filtered.map((e, idx) => (
-            <li 
-              key={idx} 
-              style={{ 
-                padding: '8px 6px', 
-                borderBottom: '1px solid rgba(255,255,255,0.03)', 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center',
-                cursor: 'pointer',
-                transition: 'background 0.2s'
-              }}
-              onMouseEnter={(ev) => ev.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
-              onMouseLeave={(ev) => ev.currentTarget.style.background = 'transparent'}
-            >
-              <div onClick={() => handleImageClick(e)} style={{ flex: 1 }}>
-                <div style={{ fontSize: 14 }}>{e.title || String(e.file)}</div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>{String(e.file)}</div>
-              </div>
-              <div style={{ marginLeft: 8 }}>
-                <button
-                  onClick={() => handleImageClick(e)}
-                  style={{
-                    padding: '6px 12px',
-                    background: 'rgba(154, 209, 255, 0.15)',
-                    border: '1px solid rgba(154, 209, 255, 0.3)',
-                    borderRadius: '4px',
-                    color: '#9ad1ff',
-                    cursor: 'pointer',
-                    fontSize: '13px',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseEnter={(ev) => {
-                    ev.currentTarget.style.background = 'rgba(154, 209, 255, 0.25)'
-                    ev.currentTarget.style.borderColor = 'rgba(154, 209, 255, 0.5)'
-                  }}
-                  onMouseLeave={(ev) => {
-                    ev.currentTarget.style.background = 'rgba(154, 209, 255, 0.15)'
-                    ev.currentTarget.style.borderColor = 'rgba(154, 209, 255, 0.3)'
-                  }}
-                >
-                  Ver
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   )
