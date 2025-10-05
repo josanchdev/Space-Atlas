@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      VITE_API_URL: "https://atlas-backend-esd4d4d9avb7axc7.swedencentral-01.azurewebsites.net"
+      VITE_API_URL: "https://atlas-backend-esd4d4d9avb7axc7.swedencentral-01.azurewebsites.net/api"
     steps:
       - uses: actions/checkout@v3
         with:
