@@ -1,18 +1,8 @@
 # 🌌 Space Atlas
 
-<div align="center">
-
-![Space Atlas Banner](https://img.shields.io/badge/Space-Atlas-blue?style=for-the-badge)
-![Azure](https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoft-azure&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
-
 **An interactive 3D solar system explorer with AI-powered educational insights about Mars and planetary exploration.**
 
-[Live Demo](#) • [Documentation](#features) • [Report Bug](#)
-
-</div>
+🎥 **[Watch Demo on YouTube](https://youtu.be/O9LFdsgih54)**
 
 ---
 
