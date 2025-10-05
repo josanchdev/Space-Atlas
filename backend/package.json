@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "build": "echo \"No build step for backend\"",
+    "build": "echo \"No build step for backend\""
   },
   "keywords": [],
   "author": "",
