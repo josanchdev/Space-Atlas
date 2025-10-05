@@ -24,6 +24,7 @@ function ImageCard({ img, onClick }) {
 
 export default function ExplorePage() {
   const [query, setQuery] = useState('')
+  const [images, setImages] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
   const apiBase = import.meta.env?.VITE_API_BASE || 'http://localhost:3000/api'
