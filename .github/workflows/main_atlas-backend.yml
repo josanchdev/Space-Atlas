@@ -72,9 +72,10 @@ jobs:
         with:
           app-name: 'atlas-backend'
           slot-name: 'Production'
-          package: backend
+          package: .
 
           
+
 
 
 
