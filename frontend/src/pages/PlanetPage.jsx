@@ -3,7 +3,7 @@ import { useEffect, useState, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Menu, X, Eye } from 'lucide-react'
 import ModelLoader from '../components/ModelLoader'
-import POIMarker from '../components/POIMarker'
+import MarkerSphere from '../components/MarkerSphere'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import * as THREE from 'three'
@@ -474,9 +474,9 @@ function PlanetModel({ name, poiPositions = [] }) {
       >
         <ModelLoader name={name} scale={1.6} />
         
-        {/* Render interactive POI markers */}
+        {/* Render interactive 3D sphere POI markers */}
         {poiPositions.map((item) => (
-          <POIMarker
+          <MarkerSphere
             key={item.id}
             position={item.position}
             poi={item.poi}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import OpenSeadragon from 'openseadragon'
-import PoiMarker from './PoiMarker'
-import { X } from 'lucide-react'
+import POIMarker from './POIMarker'
+import { X, Bot } from 'lucide-react'
 import '../styles/poiMarker.css'
 
 /**
@@ -37,7 +37,19 @@ export default function DziViewer({ dziUrl, imageName, pois = [] }) {
       viewerInstance.current = OpenSeadragon({
         element: viewerRef.current,
         prefixUrl: 'https://cdn.jsdelivr.net/npm/openseadragon@4.1/build/openseadragon/images/',
-        tileSources: dziUrl
+        tileSources: dziUrl,
+        // Prevenir menú contextual por defecto de OpenSeadragon
+        gestureSettingsTouch: {
+          clickToZoom: true
+        }
+      })
+      
+      // Prevenir el menú contextual del navegador en el visor
+      viewerRef.current.addEventListener('contextmenu', (e) => {
+        // Solo prevenir si no es un marcador POI
+        if (!e.target.closest('.poi-marker')) {
+          e.preventDefault()
+        }
       })
 
       viewerInstance.current.addHandler('open', () => {
@@ -132,10 +144,16 @@ export default function DziViewer({ dziUrl, imageName, pois = [] }) {
       
       // Crear el marcador React y renderizarlo
       const markerContainer = document.createElement('div')
+      // Prevenir el menú contextual por defecto en el contenedor
+      markerContainer.addEventListener('contextmenu', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      })
+      
       import('react-dom/client').then(({ createRoot }) => {
         const root = createRoot(markerContainer)
         root.render(
-          <PoiMarker poi={poi} onClick={handlePoiClick} />
+          <POIMarker poi={poi} onClick={handlePoiClick} />
         )
       })
       
@@ -174,6 +192,21 @@ export default function DziViewer({ dziUrl, imageName, pois = [] }) {
         true
       )
     }
+  }
+
+  /**
+   * Maneja el cierre del sidebar con zoom out
+   */
+  const handleCloseSidebar = () => {
+    // Hacer zoom out completo antes de cerrar
+    if (viewerInstance.current) {
+      viewerInstance.current.viewport.goHome(true)
+    }
+    
+    // Pequeño delay para que se vea la animación del zoom
+    setTimeout(() => {
+      setSelectedPoi(null)
+    }, 300)
   }
 
   return (
@@ -225,21 +258,61 @@ export default function DziViewer({ dziUrl, imageName, pois = [] }) {
         }}
       />
 
-      {/* Panel de información del POI seleccionado */}
+      {/* Sidebar lateral con información del POI seleccionado */}
       {selectedPoi && (
-        <div className="poi-info-panel">
-          <button 
-            className="poi-close-btn"
-            onClick={() => setSelectedPoi(null)}
-          >
-            <X size={16} />
-          </button>
-          <h3 className="poi-title">{selectedPoi.title}</h3>
-          <p className="poi-description">{selectedPoi.description}</p>
-          <div className="poi-coords">
-            <span>Lat: {selectedPoi.lat.toFixed(2)}°</span>
-            <span>Lon: {selectedPoi.lon.toFixed(2)}°</span>
+        <div className="poi-sidebar">
+          <div className="poi-sidebar-header">
+            <h3 className="poi-sidebar-title">Point of Interest</h3>
+            <button 
+              className="poi-sidebar-close"
+              onClick={handleCloseSidebar}
+              title="Close and zoom out"
+            >
+              <X size={18} strokeWidth={2} />
+            </button>
           </div>
+          
+          <div className="poi-sidebar-content">
+            <div className="poi-detail-section">
+              <h4 className="poi-detail-label">Name</h4>
+              <p className="poi-detail-value">{selectedPoi.title}</p>
+            </div>
+
+            <div className="poi-detail-section">
+              <h4 className="poi-detail-label">Description</h4>
+              <p className="poi-detail-value">{selectedPoi.description || 'No description available'}</p>
+            </div>
+
+            <div className="poi-detail-section">
+              <h4 className="poi-detail-label">Coordinates</h4>
+              <div className="poi-coords-grid">
+                <div className="poi-coord-item">
+                  <span className="poi-coord-label">Latitude</span>
+                  <span className="poi-coord-value">{selectedPoi.lat.toFixed(4)}°</span>
+                </div>
+                <div className="poi-coord-item">
+                  <span className="poi-coord-label">Longitude</span>
+                  <span className="poi-coord-value">{selectedPoi.lon.toFixed(4)}°</span>
+                </div>
+              </div>
+            </div>
+
+            {selectedPoi.origin && (
+              <div className="poi-detail-section">
+                <h4 className="poi-detail-label">Origin</h4>
+                <p className="poi-detail-value poi-origin-badge">{selectedPoi.origin}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Botón del robot en la esquina inferior derecha del sidebar */}
+          <button 
+            className="robot-button-sidebar"
+            onClick={() => console.log('Robot button clicked')}
+            title="AI Assistant"
+          >
+            <Bot size={24} strokeWidth={2} />
+          </button>
         </div>
       )}
     </div>
