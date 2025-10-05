@@ -16,6 +16,7 @@ import ScientistAuthPage from './pages/ScientistAuthPage'
 import MyProfilePage from './pages/MyProfilePage'
 import MyBookmarksPage from './pages/MyBookmarksPage'
 import NotFoundPage from './pages/NotFoundPage'
+import ImageViewerPage from './pages/ImageViewerPage'
 
 function AppContent() {
   const location = useLocation()
@@ -24,9 +25,10 @@ function AppContent() {
   // Lista de nombres de planetas y cuerpos celestes
   const celestialBodies = ['sun', 'mercury', 'venus', 'earth', 'moon', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto']
   const isPlanetPage = celestialBodies.some(body => location.pathname === `/${body}`)
+  const isImageViewerPage = location.pathname.startsWith('/image/')
   
-  // Ocultar header y footer en solar-system y en páginas de planetas individuales
-  const hideHeaderFooter = isSolarSystemPage || isPlanetPage
+  // Ocultar header y footer en solar-system, páginas de planetas y visor de imágenes
+  const hideHeaderFooter = isSolarSystemPage || isPlanetPage || isImageViewerPage
 
   return (
     <>
@@ -44,6 +46,7 @@ function AppContent() {
           <Route path="/content-manager" element={<ScientistsPage />} />
           <Route path="/myprofile" element={<MyProfilePage />} />
           <Route path="/mybookmarks" element={<MyBookmarksPage />} />
+          <Route path="/image/:image_name" element={<ImageViewerPage />} />
           <Route path="/:name" element={<PlanetPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

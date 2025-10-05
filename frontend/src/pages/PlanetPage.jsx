@@ -128,7 +128,7 @@ function PlanetDetailView({ name, imagesData, error, onClose }) {
 
 function ImageSearchList({ entries, planetName }) {
   const [q, setQ] = useState('')
-  const apiBase = (import.meta.env && import.meta.env.VITE_API_BASE) || '/api'
+  const navigate = useNavigate()
 
   const filtered = entries.filter((e) => {
     if (!e || !e.file) return false
@@ -139,15 +139,10 @@ function ImageSearchList({ entries, planetName }) {
     return filename.includes(term) || title.includes(term)
   })
 
-  function getDziUrl(entry) {
-    // If path is absolute/URL-like, return as-is, else build from assets folder
-    const file = entry.file
-    if (!file) return null
-    if (/^https?:\/\//i.test(file) || file.startsWith('/')) return file
-    // Prefer backend serving if available (files uploaded by users will be served from API)
-    const b = apiBase.replace(/\/$/, '')
-    // backend expected route: /images/:planet/:filename (same as loadImages API)
-    return `${b}/images/${planetName}/${file}`
+  const handleImageClick = (entry) => {
+    // Navigate to universal image viewer
+    const imageName = String(entry.file).replace(/\.dzi$/i, '')
+    navigate(`/image/${imageName}?planet=${planetName}&source=planet&title=${encodeURIComponent(entry.title || imageName)}`)
   }
 
   return (
@@ -163,17 +158,48 @@ function ImageSearchList({ entries, planetName }) {
         {filtered.length === 0 && <p style={{ color: 'rgba(255,255,255,0.6)' }}>No se han encontrado imágenes.</p>}
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {filtered.map((e, idx) => (
-            <li key={idx} style={{ padding: '8px 6px', borderBottom: '1px solid rgba(255,255,255,0.03)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
+            <li 
+              key={idx} 
+              style={{ 
+                padding: '8px 6px', 
+                borderBottom: '1px solid rgba(255,255,255,0.03)', 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                cursor: 'pointer',
+                transition: 'background 0.2s'
+              }}
+              onMouseEnter={(ev) => ev.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+              onMouseLeave={(ev) => ev.currentTarget.style.background = 'transparent'}
+            >
+              <div onClick={() => handleImageClick(e)} style={{ flex: 1 }}>
                 <div style={{ fontSize: 14 }}>{e.title || String(e.file)}</div>
                 <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>{String(e.file)}</div>
               </div>
               <div style={{ marginLeft: 8 }}>
-                {getDziUrl(e) ? (
-                  <a href={getDziUrl(e)} target="_blank" rel="noreferrer" style={{ color: '#9ad1ff', textDecoration: 'none' }}>Abrir</a>
-                ) : (
-                  <span style={{ color: 'rgba(255,255,255,0.4)' }}>-</span>
-                )}
+                <button
+                  onClick={() => handleImageClick(e)}
+                  style={{
+                    padding: '6px 12px',
+                    background: 'rgba(154, 209, 255, 0.15)',
+                    border: '1px solid rgba(154, 209, 255, 0.3)',
+                    borderRadius: '4px',
+                    color: '#9ad1ff',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(ev) => {
+                    ev.currentTarget.style.background = 'rgba(154, 209, 255, 0.25)'
+                    ev.currentTarget.style.borderColor = 'rgba(154, 209, 255, 0.5)'
+                  }}
+                  onMouseLeave={(ev) => {
+                    ev.currentTarget.style.background = 'rgba(154, 209, 255, 0.15)'
+                    ev.currentTarget.style.borderColor = 'rgba(154, 209, 255, 0.3)'
+                  }}
+                >
+                  Ver
+                </button>
               </div>
             </li>
           ))}

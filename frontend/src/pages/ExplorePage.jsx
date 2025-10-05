@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Search } from 'lucide-react'
+import { transformPoisToImages, PLACEHOLDER_IMAGES } from '../utils/imageDataHelpers'
 import '../styles/explorePage.css'
 
-function ImageCard({ img }) {
+function ImageCard({ img, onClick }) {
   return (
-    <div className="explore-card">
+    <div className="explore-card" onClick={onClick} style={{ cursor: 'pointer' }}>
       <div className="explore-card-thumbnail">
         {img.thumbnail ? (
           <img src={img.thumbnail} alt={img.title} />
@@ -23,25 +25,43 @@ function ImageCard({ img }) {
 export default function ExplorePage() {
   const [images, setImages] = useState([])
   const [query, setQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const navigate = useNavigate()
+  const apiBase = import.meta.env?.VITE_API_BASE || 'http://localhost:3000/api'
 
   useEffect(() => {
     let mounted = true
-    fetch('/api/images')
-      .then((r) => r.json())
+    setIsLoading(true)
+    
+    // Fetch POIs from backend
+    fetch(`${apiBase}/pois`)
+      .then((r) => {
+        if (!r.ok) throw new Error('Failed to fetch')
+        return r.json()
+      })
       .then((data) => {
         if (!mounted) return
-        setImages(data || [])
+        
+        // Transform POIs to image format
+        const transformedImages = transformPoisToImages(data)
+        
+        // Si no hay datos, usar placeholders
+        if (transformedImages.length === 0) {
+          console.log('No POIs found, using placeholder data')
+          setImages(PLACEHOLDER_IMAGES.explore)
+        } else {
+          console.log(`Loaded ${transformedImages.length} images from backend`)
+          setImages(transformedImages)
+        }
+        setIsLoading(false)
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Error fetching POIs:', error)
         if (!mounted) return
-        setImages([
-          { filename: 'earth_001.dzi', title: 'Blue Marble', body: 'Earth', thumbnail: '/public/placeholder-earth.jpg' },
-          { filename: 'jupiter_001.dzi', title: 'Great Red Spot', body: 'Jupiter', thumbnail: '/public/placeholder-jupiter.jpg' },
-          { filename: 'mars_001.dzi', title: 'Olympus Mons', body: 'Mars', thumbnail: '/public/placeholder-mars.jpg' },
-          { filename: 'venus_001.dzi', title: 'Venus Surface', body: 'Venus', thumbnail: '/public/placeholder-venus.jpg' },
-          { filename: 'saturn_001.dzi', title: 'Saturn Rings', body: 'Saturn', thumbnail: '/public/placeholder-saturn.jpg' },
-          { filename: 'neptune_001.dzi', title: 'Neptune Storm', body: 'Neptune', thumbnail: '/public/placeholder-neptune.jpg' },
-        ])
+        // Fallback a datos de ejemplo si falla la petición
+        console.log('Using placeholder data due to error')
+        setImages(PLACEHOLDER_IMAGES.explore)
+        setIsLoading(false)
       })
 
     return () => {
@@ -53,6 +73,13 @@ export default function ExplorePage() {
     if (!query) return true
     return (img.body || '').toLowerCase().includes(query.toLowerCase()) || (img.title || '').toLowerCase().includes(query.toLowerCase())
   })
+
+  const handleImageClick = (img) => {
+    // Extract image name without .dzi extension
+    const imageName = String(img.filename).replace(/\.dzi$/i, '')
+    const planet = (img.body || '').toLowerCase()
+    navigate(`/image/${imageName}?planet=${planet}&source=explore&title=${encodeURIComponent(img.title || imageName)}`)
+  }
 
   return (
     <div className="explore-page">
@@ -76,13 +103,20 @@ export default function ExplorePage() {
         </div>
       </div>
 
-      <div className="explore-grid">
-        {filtered.length === 0 ? (
-          <div className="no-results">No images match your search. Try a different query.</div>
-        ) : (
-          filtered.map((img, i) => <ImageCard key={i} img={img} />)
-        )}
-      </div>
+      {isLoading ? (
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'rgba(255,255,255,0.6)' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⏳</div>
+          <p>Loading images...</p>
+        </div>
+      ) : (
+        <div className="explore-grid">
+          {filtered.length === 0 ? (
+            <div className="no-results">No images match your search. Try a different query.</div>
+          ) : (
+            filtered.map((img, i) => <ImageCard key={img.id || i} img={img} onClick={() => handleImageClick(img)} />)
+          )}
+        </div>
+      )}
     </div>
   )
 }
