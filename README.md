@@ -282,11 +282,11 @@ GET    /api/dzi               # Get DZI image metadata
 
 This project was developed by a team of 5 developers:
 
-- **[Author Name 1]** - [GitHub Profile]
-- **[Author Name 2]** - [GitHub Profile]
-- **[Author Name 3]** - [GitHub Profile]
-- **[Author Name 4]** - [GitHub Profile]
-- **[Author Name 5]** - [GitHub Profile]
+- **[Alejandro Arias]** - [GitHub Profile](https://github.com/Alexx019)
+- **[Jorge Sánchez]** - [GitHub Profile](https://github.com/josanchdev)
+- **[Joaquín Fuentes]** - [GitHub Profile](https://github.com/Jjoaquin04)
+- **[Fernando Silvestre]** - [GitHub Profile](https://github.com/f-silvestre)
+- **[Sergio Barrios]** - [GitHub Profile](https://github.com/CodeInIA)
 
 ## 🙏 Acknowledgments
 
