@@ -15,7 +15,6 @@ import ScientistAuthPage from './pages/ScientistAuthPage'
 import MyProfilePage from './pages/MyProfilePage'
 import MyBookmarksPage from './pages/MyBookmarksPage'
 import NotFoundPage from './pages/NotFoundPage'
-import TestPoisPage from './pages/TestPoisPage'
 
 function AppContent() {
   const location = useLocation()
@@ -43,7 +42,6 @@ function AppContent() {
           <Route path="/content-manager" element={<ScientistsPage />} />
           <Route path="/myprofile" element={<MyProfilePage />} />
           <Route path="/mybookmarks" element={<MyBookmarksPage />} />
-          <Route path="/test-pois" element={<TestPoisPage />} />
           <Route path="/:name" element={<PlanetPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
