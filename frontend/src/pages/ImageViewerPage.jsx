@@ -29,7 +29,7 @@ export default function ImageViewerPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   // Get API base URL from environment
-  const apiBase = import.meta.env?.BACKEND_URL || 'http://localhost:3000/api'
+  const apiBase = import.meta.env?.VITE_API_URL || 'http://localhost:3000/api'
 
   useEffect(() => {
     // Fetch image metadata from backend
