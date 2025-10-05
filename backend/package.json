@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
+    "build": "echo \"No build step for backend\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
