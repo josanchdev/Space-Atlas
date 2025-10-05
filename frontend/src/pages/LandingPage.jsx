@@ -118,7 +118,11 @@ export default function LandingPage() {
 
         <div className="recent-images-grid">
           {recentImages.map((image) => (
-            <div key={image.id} className="image-card">
+            <div 
+              key={image.id} 
+              className="image-card"
+              onClick={() => handleNavigation(`/image/${encodeURIComponent(image.title.replace(/\s+/g, '_'))}`)}
+            >
               <div className="image-card-media">
                 <img src={image.imageUrl} alt={image.title} />
                 <div className="image-card-overlay">
