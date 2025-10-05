@@ -26,7 +26,6 @@ export default function Footer() {
           <ul className="footer-links">
             <li><a href="/solar-system">Solar System</a></li>
             <li><a href="/space-missions">Space Missions</a></li>
-            <li><a href="/news">Latest News</a></li>
             <li><a href="/explore">Discover</a></li>
           </ul>
         </div>

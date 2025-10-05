@@ -129,14 +129,6 @@ export default function Header() {
 
         <nav className={`aa-nav ${isMenuOpen ? 'active' : ''}`}>
           <NavLink 
-            to="/news" 
-            onClick={() => handleNavClick('/news')}
-            className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"} 
-            id="title-font"
-          >
-            News
-          </NavLink>
-          <NavLink 
             to="/explore" 
             onClick={() => handleNavClick('/explore')}
             className={({ isActive }) => isActive ? "aa-nav-link aa-nav-link-active" : "aa-nav-link"} 

@@ -23,7 +23,6 @@ function ImageCard({ img, onClick }) {
 }
 
 export default function ExplorePage() {
-  const [images, setImages] = useState([])
   const [query, setQuery] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
