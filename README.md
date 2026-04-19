@@ -42,7 +42,7 @@
 
 ## Architecture
 
-​```
+```
 Space Atlas
 ├── Frontend (React + Vite)
 │   ├── 3D Solar System (Three.js)
@@ -55,7 +55,7 @@ Space Atlas
     ├── MongoDB Database
     ├── Azure OpenAI Service
     └── Azure Blob Storage
-​```
+```
 
 ## Technology Stack
 
