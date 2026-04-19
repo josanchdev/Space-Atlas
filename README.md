@@ -98,19 +98,19 @@ See `.github/workflows/` for the deployment pipelines.
 - Azure account with Blob Storage and OpenAI Service configured
 
 ### 1. Clone the Repository
-​```bash
+```bash
 git clone https://github.com/josanchdev/Space-Atlas.git
 cd Space-Atlas
-​```
+```
 
 ### 2. Backend Setup
-​```bash
+```bash
 cd backend
 npm install
-​```
+```
 
 Create a `.env` file in the `backend` directory:
-​```env
+```env
 PORT=3000
 MONGODB_URI=your_mongodb_connection_string
 AZURE_STORAGE_CONNECTION_STRING=your_azure_storage_connection_string
@@ -119,28 +119,28 @@ AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint
 AZURE_OPENAI_KEY=your_azure_openai_api_key
 AZURE_OPENAI_API_VERSION=2024-11-20
 AZURE_OPENAI_DEPLOYMENT=gpt-4o
-​```
+```
 
 Start the backend server:
-​```bash
+```bash
 npm run dev
-​```
+```
 
 ### 3. Frontend Setup
-​```bash
+```bash
 cd ../frontend
 npm install
-​```
+```
 
 Create a `.env` file in the `frontend` directory:
-​```env
+```env
 VITE_API_URL=http://localhost:3000/api
-​```
+```
 
 Start the development server:
-​```bash
+```bash
 npm run dev
-​```
+```
 
 The application will be available at `http://localhost:5173`
 
