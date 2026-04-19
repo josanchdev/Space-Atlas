@@ -146,7 +146,7 @@ The application will be available at `http://localhost:5173`
 
 ## Project Structure
 
-​```
+```
 Space-Atlas/
 │
 ├── backend/
@@ -167,29 +167,32 @@ Space-Atlas/
     │   ├── utils/               # Helper functions
     │   └── App.jsx
     └── package.json
-​```
+```
 
 ## API Endpoints
 
 ### POI Endpoints
-​```
+
+```
 GET    /api/pois              # Get all Points of Interest
 GET    /api/pois/:id          # Get POI by ID
 POST   /api/pois              # Create new POI
 PUT    /api/pois/:id          # Update POI
 DELETE /api/pois/:id          # Delete POI
-​```
+```
 
 ### AI Explanation Endpoint
-​```
+
+```
 POST   /api/explain           # Generate AI explanation for a POI
 Body: { title, imageUrl, description }
-​```
+```
 
 ### Image Endpoint
-​```
+
+```
 GET    /api/dzi               # Get DZI image metadata
-​```
+```
 
 ## Authors
 
